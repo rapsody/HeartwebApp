@@ -1,0 +1,10 @@
+  - - select  username  
+						from group_users left join users on  user_id = users.id 
+						where group_id = '' 
+------------------- 
+
+Nickblyth@gmail.com,Richard@gruden.com,  - - select  username  
+						from group_users left join users on  user_id = users.id 
+						where group_id = '' 
+------------------- 
+

@@ -1,0 +1,12 @@
+SELECT * from patients where id = 5 
+Blow - Joe 
+SELECT * from patients where id = 5 
+Blow - Joe 
+SELECT * from patients where id = 5 
+Blow - Joe 
+SELECT * from patients where id = 5  - 52 
+Blow - Joe 
+SELECT * from patients where id = 5  - 52 
+Blow - Joe 
+SELECT * from patients where id = 5  - 52 
+Blow - Joe 

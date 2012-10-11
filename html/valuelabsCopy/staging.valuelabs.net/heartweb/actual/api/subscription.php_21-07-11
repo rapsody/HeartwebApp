@@ -1,0 +1,26 @@
+<?php
+
+    include_once "../includes/webservice.inc.php";
+	
+	$webService = new Webservices_Writer();
+	$webService -> init();
+	
+	/* to get subscription details */
+	
+	$subscription = new Subscription();
+	$return = $subscription -> getSubscription();
+	/* end */    
+	
+	if ($return) {
+	   	$webService -> createXMLInstance();	
+		$webService -> appendArrayToRootNode('',$return);	
+		$webService -> displayXML();
+    }
+    else {
+    	if(isset($subscription -> errorMessages) && count($subscription -> errorMessages) > 0)
+    	$errormessages =  $subscription -> errorMessages;
+    	else
+    	$errormessages[] = 'No Data Found';
+        $xmls = $webService -> errorXML(join(",", $errormessages)); 
+		$webService -> outputXML($xmls);
+    }

@@ -1,0 +1,182 @@
+<?php
+Class Messages {
+    
+    private $objMessagesModel;
+
+    public function __construct()
+    {
+        include ROOT_DIR.'models'.DS.__class__.'.class.php';
+        $class_name = __class__.'_Model';
+        $this->objMessagesModel = new $class_name;
+    }
+	
+	public function setError($error) {
+        
+        $this -> errorMessages[] = $error;
+        return false;
+    }
+    
+        
+    public function getMessage($input) 
+    {
+		try{
+            if (!isset($input[2]) ) throw new Exception ("Invalid Input");
+            
+            libxml_use_internal_errors(true);
+                
+            // convert the xml into Object
+            $inputObject = simplexml_load_string(
+                                    $input, 
+                                    "SimpleXMLElement" , 
+                                    LIBXML_NOCDATA
+                                );
+                                
+            if (!$inputObject) {
+
+                // @var Array to store the error messages
+                $errors = array ();
+                
+                // loop through the errors and store the errors in $errors
+                foreach ( libxml_get_errors() as $e ) 
+                    $errors[] = $e -> message;
+            
+                // @var String Errors are joined by a newline
+                $errors = join ("\n", $errors);
+                
+                // throw the error
+                throw new Exception ($errors);
+            } // if !$inputObject
+            
+			if(!isset($inputObject -> messageid) || $inputObject -> messageid == '')
+				throw new Exception ('Message ID is empty');
+            if (!isset ($inputObject -> userkey) || $inputObject -> userkey == ''){
+				throw new Exception ('Userkey should not be left empty');
+            } 
+			
+			$messages = $this->objMessagesModel->getMessage($inputObject -> userkey,$inputObject -> messageid);
+			if(count($messages) > 0)
+	        {
+	        	return $messages;
+	        }
+	        else
+	        {
+	        	throw new Exception ("No Messages Found");
+	        }
+		}
+        catch (Exception $e) {
+            return $this -> setError($e -> getMessage());
+        }
+	
+    }
+    
+ 	public function getMessages($input) 
+    {
+		try{
+            if (!isset($input[2]) ) throw new Exception ("Invalid Input");
+            
+            libxml_use_internal_errors(true);
+                
+            // convert the xml into Object
+            $inputObject = simplexml_load_string(
+                                    $input, 
+                                    "SimpleXMLElement" , 
+                                    LIBXML_NOCDATA
+                                );
+                                
+            if (!$inputObject) {
+
+                // @var Array to store the error messages
+                $errors = array ();
+                
+                // loop through the errors and store the errors in $errors
+                foreach ( libxml_get_errors() as $e ) 
+                    $errors[] = $e -> message;
+            
+                // @var String Errors are joined by a newline
+                $errors = join ("\n", $errors);
+                
+                // throw the error
+                throw new Exception ($errors);
+            } // if !$inputObject
+            
+			if(!isset($inputObject -> lastupdatedate) || $inputObject -> lastupdatedate == '')
+				$updatedate  = '';
+			else
+				$updatedate  = $inputObject -> lastupdatedate;
+			
+            if (!isset ($inputObject -> userkey) || $inputObject -> userkey == ''){
+				throw new Exception ('Userkey should not be left empty');
+            } 
+			$messages = $this->objMessagesModel->getMessages($inputObject -> userkey,$updatedate);
+			if(count($messages) > 0)
+	        {
+	        	return $messages;
+	        }
+	        else
+	        {
+	        	throw new Exception ("No Messages Found");
+	        }
+		}
+        catch (Exception $e) {
+            return $this -> setError($e -> getMessage());
+        }
+		
+
+    }
+ 	public function getSentMessages($input) 
+    {
+		try{
+            if (!isset($input[2]) ) throw new Exception ("Invalid Input");
+            
+            libxml_use_internal_errors(true);
+                
+            // convert the xml into Object
+            $inputObject = simplexml_load_string(
+                                    $input, 
+                                    "SimpleXMLElement" , 
+                                    LIBXML_NOCDATA
+                                );
+                                
+            if (!$inputObject) {
+
+                // @var Array to store the error messages
+                $errors = array ();
+                
+                // loop through the errors and store the errors in $errors
+                foreach ( libxml_get_errors() as $e ) 
+                    $errors[] = $e -> message;
+            
+                // @var String Errors are joined by a newline
+                $errors = join ("\n", $errors);
+                
+                // throw the error
+                throw new Exception ($errors);
+            } // if !$inputObject
+            
+			if(!isset($inputObject -> lastupdatedate) || $inputObject -> lastupdatedate == '')
+				$updatedate  = '';
+			else
+				$updatedate  = $inputObject -> lastupdatedate;
+			
+            if (!isset ($inputObject -> userkey) || $inputObject -> userkey == ''){
+				throw new Exception ('Userkey should not be left empty');
+            } 
+			$messages = $this->objMessagesModel->getMessages($inputObject -> userkey,$updatedate);
+			if(count($messages) > 0)
+	        {
+	        	return $messages;
+	        }
+	        else
+	        {
+	        	throw new Exception ("No Messages Found");
+	        }
+		}
+        catch (Exception $e) {
+            return $this -> setError($e -> getMessage());
+        }
+		
+
+    }
+
+    
+}  

@@ -1,0 +1,540 @@
+<?php
+
+    class Groups_Model {
+        
+        
+        private $db;
+        
+        public function __construct() {
+            global $db;
+            
+            $this -> db =& $db;
+        }
+        
+        public function loadUserGroups($user_id) {
+            $result = $this -> db -> query (
+                        "SELECT
+                            *
+                        FROM
+                            " .TBL_GROUPS .' '."WHERE id IN(select group_id from users_in_group where user_id=$user_id) order by date_added desc"
+                        );
+                        
+            $return = array();
+            
+            if ($result ) {
+
+                /* fetch associative array */
+                while ($row = $result->fetch_assoc()) {
+                    $return[] = array (
+                    "groupname"    => $row['group_name'],
+                    "groupsubject" => $row['group_subject'],
+                    "groupowner"   => $row['group_owner'],
+                    "groupfaculty" => $row['group_owner_faculty'],
+                    "grouplocation"=> $row['group_location'],
+                    "groupimage"   => $row['group_image'],
+                    );
+                }
+
+                /* free result set */
+                $result->free();
+            }
+            
+            return $return;
+        }
+        
+        //Swaroops
+        public function createUserGroup($data) 
+		{
+      		$row = $this->checkUserExistence($data->auth);
+        	 
+        	 if(count($row) > 0)
+        	 {
+                 
+                $query = 'INSERT INTO groups (
+                            group_name,
+                            group_subject,
+                            group_owner,
+                            group_owner_faculty,
+                            group_location,
+                            group_image,
+                            privacy,
+                            date_added,
+                            status
+                            )
+                    VALUES ("'
+                            .$this->db->real_escape_string($data->groupname).'","'
+                            .$this->db->real_escape_string($data->groupsubject).'","'
+                            .$this->db->real_escape_string($row['id']).'","'
+                            .$this->db->real_escape_string($row['faculty']).'","'
+                            .$this->db->real_escape_string($data->grouplocation).'","'
+                            .$this->db->real_escape_string($data->groupimage).'","'
+                            .$this->db->real_escape_string($data->groupprivate).'","'
+                            .date('Y-m-d H:i:s').'","'
+                            .'1'.'"
+                            )';
+                            
+                $result = $this -> db -> query ($query);
+                
+                if ($result ) {
+                    return  array ("id" => '1',"name"   => 'Group Added Successfully');
+                } else {
+                    return  array ("id" => '0',"name"   => 'Error while adding group');
+                }
+            }
+            else
+            {
+                return  array ("id" => '0',"name"   => 'Authentication Failed');    
+            }
+        }
+        
+        public function checkGroupExistence($group)
+        {
+            $selectQuery = 'SELECT * 
+            FROM 
+                groups 
+            WHERE 
+                group_name = "'.trim($group).'"';
+
+            $result = $this -> db -> query ($selectQuery);
+
+            return ($result->num_rows > 0)?true:false;
+        }
+
+        // Request to join in a group.
+        public function groupJoin($data)
+        {
+        	$row = $this->checkUserExistence($data->auth);
+        	 
+        	 if(count($row) > 0)
+        	 {
+                $select = '	SELECT * 
+                			FROM 
+                				group_users 
+                			WHERE 
+                				group_id = "'.$this->db->real_escape_string($data->groupid).'"
+                			AND
+                				user_id = "'.$this->db->real_escape_string($row['id']).'"';
+                $getinfo = $this -> db -> query ($select);
+                if($getinfo->num_rows > 0)
+                {
+                 return  array ("status" => 'error',"message"   => 'You are either a member or already requested this group.');    
+                }
+                else
+                {
+                	$query = '	INSERT 
+                			INTO 
+                				group_users 
+                			SET
+                            	group_id = "'.$this->db->real_escape_string($data->groupid).'",
+                            	user_id = "'.$this->db->real_escape_string($row['id']).'",
+                            	date_requested = "'.date('Y-m-d H:i:s').'",
+                            	status = "PENDING"
+                            ';
+                    $result = $this -> db -> query ($query);
+	                
+	                if ($result ) {
+	                    return  array ("status" => 'OK',"message"   => 'Request Sent Successfully.');
+	                } else {
+	                    return  array ("status" => 'error',"message"   => 'Error while processing your request.');
+	                }
+                }
+            }
+            else
+            {
+                return  array ("status" => 'error',"message"   => 'Authentication Failed');    
+            }
+        	
+        }
+        
+        // Request to unjoin from a group.
+    	public function groupUnjoin($data)
+        {
+        	 $row = $this->checkUserExistence($data->auth);
+        	 
+        	 if(count($row) > 0)
+        	 {
+                $select = '	SELECT * 
+                			FROM 
+                				group_users 
+                			WHERE 
+                				group_id = "'.$this->db->real_escape_string($data->groupid).'"
+                			AND
+                				user_id = "'.$this->db->real_escape_string($row['id']).'"';
+                $getinfo = $this -> db -> query ($select);
+                if($getinfo->num_rows > 0)
+                {
+                	$query = '	DELETE 
+                			FROM 
+                				group_users 
+                			WHERE
+                            	group_id = "'.$this->db->real_escape_string($data->groupid).'"
+                            AND	
+                            	user_id = "'.$this->db->real_escape_string($row['id']).'"
+                            LIMIT 1	
+                            ';
+                    $result = $this -> db -> query ($query);
+	                
+	                if ($result ) {
+	                    return  array ("status" => 'OK',"message"   => '');
+	                } else {
+	                    return  array ("status" => 'error',"message"   => 'Error while processing your request.');
+	                }
+                }
+                else
+                {
+                 return  array ("status" => 'error',"message"   => 'You are not a member of this group to unjoin.');
+                }
+            }
+            else
+            {
+                return  array ("status" => 'error',"message"   => 'Authentication Failed');    
+            }
+        	
+        }
+        
+        // To approve user in a group.
+        public function groupApprove($data)
+        {
+                    $selectQuery = '	SELECT 
+          						u.id
+            				FROM 
+ 	 			          		users u, groups g 
+            				WHERE 
+            					g.group_owner = u.id
+            				AND
+								g.id = "' . $this->db->real_escape_string($data->groupid) . '"
+            				AND
+            					u.userkey = "'. $this->db->real_escape_string($data->auth) .'"';
+
+
+            $result = $this -> db -> query ($selectQuery);
+
+            if($result->num_rows > 0)
+            {
+                $row = $result->fetch_assoc();
+                 
+                $select = '	SELECT * 
+                			FROM 
+                				group_users 
+                			WHERE 
+                				group_id = "'.$this->db->real_escape_string($data->groupid).'"
+                			AND
+                				user_id = "'.$this->db->real_escape_string($data->userid).'"';
+                $getinfo = $this -> db -> query ($select);
+                if($getinfo->num_rows > 0)
+                {
+                	$query = '	UPDATE
+                					group_users 
+                				SET
+                            		date_responded = "'.date('Y-m-d H:i:s').'",
+                            		status = "APPROVED"
+                            	WHERE	
+									group_id = "'.$this->db->real_escape_string($data->groupid).'" 
+								AND
+                            		user_id = "'.$this->db->real_escape_string($data->userid).'"	                            		
+                            ';
+                    $result = $this -> db -> query ($query);
+	                
+	                if ($result ) {
+	                    return  array ("status" => 'OK',"message"   => 'Approved.');
+	                } else {
+	                    return  array ("status" => 'error',"message"   => 'Error while Processing.');
+	                }
+                	
+                 }
+                else
+                {
+                return  array ("status" => 'error',"message"   => 'Invalid Request.');    	
+                }
+            }
+            else
+            {
+                return  array ("status" => 'error',"message"   => 'Authentication Failed');    
+            }
+        	
+        }
+        
+        // To reject user in a group.
+    	public function groupReject($data)
+        {
+        	$selectQuery = 'SELECT 
+          						u.id
+            				FROM 
+ 	 			          		users u,  groups g 
+            				WHERE 
+            					g.group_owner = u.id
+            				AND
+								g.id = "' . $this->db->real_escape_string($data->groupid) . '"
+            				AND
+            					u.userkey = "'. $this->db->real_escape_string($data->auth) .'"';
+
+            $result = $this -> db -> query ($selectQuery);
+
+            if($result->num_rows > 0)
+            {
+                $row = $result->fetch_assoc();
+                 
+                $select = '	SELECT * 
+                			FROM 
+                				group_users 
+                			WHERE 
+                				group_id = "'.$this->db->real_escape_string($data->groupid).'"
+                			AND
+                				user_id = "'.$this->db->real_escape_string($data->userid).'"';
+                $getinfo = $this -> db -> query ($select);
+                if($getinfo->num_rows > 0)
+                {
+                	$query = '	UPDATE
+                					group_users 
+                				SET
+                            		date_responded = "'.date('Y-m-d H:i:s').'",
+                            		status = "REJECTED"
+                            	WHERE	
+									group_id = "'.$this->db->real_escape_string($data->groupid).'" 
+								AND
+                            		user_id = "'.$this->db->real_escape_string($data->userid).'"	                            		
+                            ';
+                    $result = $this -> db -> query ($query);
+	                
+	                if ($result ) {
+	                    return  array ("status" => 'OK',"message"   => 'Rejected.');
+	                } else {
+	                    return  array ("status" => 'error',"message"   => 'Error while Processing.');
+	                }
+                 }
+                else
+                {
+                	return  array ("status" => 'error',"message"   => 'Invalid Action.');    	
+                }
+            }
+            else
+            {
+                return  array ("status" => 'error',"message"   => 'Authentication Failed');    
+            }
+        }
+        
+        // Latest Public groups.
+    	public function getLatestGroups()
+        {
+        	$selectQuery = 'SELECT 
+        						g.id,g.group_name,g.group_subject
+            				FROM 
+					            groups g
+            				WHERE 
+            					g.privacy = "public"
+            				LIMIT 10';
+
+            $result = $this -> db -> query ($selectQuery);
+
+            if($result->num_rows > 0)
+            {
+            	$returnarray = array();
+                while($row = $result->fetch_assoc())
+                {
+                	$group['id'] = $row['id'];  	
+                	$group['groupname'] = $row['group_name'];
+                	$group['subject'] = $row['group_subject'];
+                	$returnarray['groups']['group'][]['nodes'] = $group;
+                }
+                return $returnarray;
+            }
+            else
+            {
+            return  array ("status" => 'error',"message"   => 'No new groups available.');
+            }
+        }
+        
+        // User groups.
+        public function getMyGroups($data)
+        {
+        	 $userdata = $this->checkUserExistence($data->auth);
+        	 
+        	 if(count($userdata) > 0)
+        	 {
+		         	
+	        	 	$selectQuery = '	SELECT 
+		        	 						g.id,g.group_name,g.group_subject
+		            					FROM 
+			            					groups g,group_users gu
+			            				WHERE 
+			            					g.id = gu.group_id
+			            				AND
+		    	        					gu.user_id = "'.$userdata['id'].'"';
+
+		            $result = $this -> db -> query ($selectQuery);
+		
+		            if($result->num_rows > 0)
+		            {
+		            	$result = array();
+		                while($row = $result->fetch_assoc())
+		                {
+		                	$group['id'] = $row['id'];  	
+		                	$group['groupname'] = $row['group_name'];
+		                	$group['subject'] = $row['group_subject'];
+		                	$result['groups']['group'][]['nodes'] = $group;	
+		                }
+		                return $result;
+		            }
+		            else
+		            {
+		            return  array ("status" => 'error',"message"   => 'No groups available.');
+		            }
+        	 }
+        	 else
+        	 {
+        	 	return  array ("status" => 'error',"message"   => 'Authentication Failed');  
+        	 }
+        	 
+        	
+        	
+            
+        }
+        
+        // User Request awaiting for approval.
+        public function getGroupRequestStatus($data)
+        {
+        	 $userdata = $this->checkUserExistence($data->auth);
+        	 
+        	 if(count($userdata) > 0)
+        	 {
+	        	 	$select = 'SELECT
+	        	 					g.group_name,
+	        	 					gu.date_requested,
+	        	 					gu.date_responded,
+	        	 					gu.status,
+	        	 					u.first_name,
+	        	 					u.last_name
+	        	 				FROM
+	        	 					groups g,
+	        	 					group_users gu,
+	        	 					users u
+	        	 				WHERE
+	        	 					g.id = gu.group_id
+	        	 				AND
+	        	 					gu.user_id = u.id
+	        	 				AND
+	        	 					gu.user_id = "'.$userdata['id'].'"';
+	        	 	
+	        	 	$result = $this -> db -> query ($select);
+	        	 	if($result->num_rows > 0)
+	        	 	{
+	        	 		$returnarray = array(); 
+	        	 		while($row = $result->fetch_assoc())
+	        	 		{
+	        	 			$temp = array();
+	        	 			$temp['groupname'] = $row['group_name'];
+	        	 			$temp['requesteddate'] = $row['date_requested'];
+	        	 			$temp['respondeddate'] = $row['date_responded'];
+	        	 			$temp['username'] = $row['first_name'] . ' ' . $row['last_name'];	        	 			
+	        	 			
+	        	 			if($row['status'] == 'PENDING'){
+
+	        	 				$returnarray['requests']['pending']['request'][]['nodes'] = $temp;		 
+	        	 				
+	        	 			} else if ($row['status'] == 'APPROVED') {
+
+	        	 				$returnarray['requests']['approved']['request'][]['nodes'] = $temp;		 
+	        	 				
+	        	 			} else if ($row['status'] == 'REJECTED'){
+	        	 				
+	        	 				$returnarray['requests']['rejected']['request'][]['nodes'] = $temp;		 
+	        	 				
+	        	 			}
+	        	 			
+	        	 		}
+	        	 		return $returnarray;
+	        	 	}
+	        	 	else
+	        	 	{
+	        	 	return  array ("status" => 'error',"message"   => 'Data not available');  
+	        	 	}
+	        	 	
+        	 }
+        	 else
+        	 {
+        	 	return  array ("status" => 'error',"message"   => 'Authentication Failed');  
+        	 }	 	
+         	
+        }
+        
+        // User Request Approved Groups  
+        public function getMyGroupRequestStatus($data)
+        {
+        	 $userdata = $this->checkUserExistence($data->auth);
+        	 if(count($userdata) > 0)
+        	 {
+	        	 	$select = 'SELECT
+	        	 					g.group_name,
+	        	 					gu.date_requested,
+	        	 					gu.date_responded,
+	        	 					gu.status,
+	        	 					u.first_name,
+	        	 					u.last_name
+	        	 				FROM
+	        	 					groups g,
+	        	 					group_users gu,
+	        	 					users u
+	        	 				WHERE
+	        	 					g.id = gu.group_id
+	        	 				AND
+	        	 					gu.user_id = u.id
+	        	 				AND
+	        	 					g.group_owner = "'.$userdata['id'].'"';
+	        	 	
+	        	 	$result = $this -> db -> query ($select);
+	        	 	if($result->num_rows > 0)
+	        	 	{
+	        	 		$returnarray = array(); 
+	        	 		while($row = $result->fetch_assoc())
+	        	 		{
+	        	 			$temp = array();
+	        	 			$temp['groupname'] = $row['group_name'];
+	        	 			$temp['requesteddate'] = $row['date_requested'];
+	        	 			$temp['respondeddate'] = $row['date_responded'];
+	        	 			$temp['username'] = $row['first_name'] . ' ' . $row['last_name'];	        	 			
+	        	 			
+	        	 			if($row['status'] == 'PENDING'){
+
+	        	 				$returnarray['requests']['pending']['request'][]['nodes'] = $temp;		 
+	        	 				
+	        	 			} else if ($row['status'] == 'APPROVED') {
+
+	        	 				$returnarray['requests']['approved']['request'][]['nodes'] = $temp;		 
+	        	 				
+	        	 			} else if ($row['status'] == 'REJECTED'){
+	        	 				
+	        	 				$returnarray['requests']['rejected']['request'][]['nodes'] = $temp;		 
+	        	 				
+	        	 			}
+	        	 			
+	        	 		}
+	        	 		return $returnarray;
+	        	 	}
+	        	 	else
+	        	 	{
+	        	 	return  array ("status" => 'error',"message"   => 'Data not available');  
+	        	 	}
+	        	 	
+        	 }
+        	 else
+        	 {
+        	 	return  array ("status" => 'error',"message"   => 'Authentication Failed');  
+        	 }	 	
+        
+        }
+        
+        // Checks whether user exists with the userkey or not  
+        private function checkUserExistence($userkey)
+        {
+        	$selectQuery = 'SELECT u.id,u.faculty
+            FROM 
+            	users u
+            WHERE 
+            	u.userkey = "' . $this->db->real_escape_string($userkey) . '"';	
+            
+        	$result = $this -> db -> query ($selectQuery);
+            
+        	return ($result->num_rows > 0)?$result->fetch_assoc():'';
+        }
+        
+    }// end fn: Faculites

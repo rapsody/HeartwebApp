@@ -1,0 +1,380 @@
+<?php
+
+    class Forms_Model {
+        
+        
+        private $db;
+        
+        public function __construct() {
+            global $db;
+            
+            $this -> db =& $db;
+        }
+        
+        public function getForm($userauth_key, $formkey) {
+            
+        	$query = "SELECT 
+                        	frm.patient_detail_ur as PatientDetailUR,
+                        	frm.patient_detail_dob as PatientDetailDOB,
+                        	frm.patient_detail_age as PatientDetailAge,
+                        	frm.patient_detail_sex as PatientDetailSex,
+                        	frm.patient_detail_surname as PatientDetailSurname,
+                        	frm.patient_detail_firstname as PatientDetailFirstName,
+                        	frm.patient_detail_address as PatientDetailAddress,
+                        	frm.patient_detail_suburb as PatientDetailSuburb,
+                        	frm.patient_detail_state as PatientDetailState,
+                        	frm.patient_detail_postcode as PatientDetailPostCode,
+                        	frm.patient_detail_email as PatientDetailEmail,
+                        	frm.patient_detail_tel as PatientDetailTel,
+                        	frm.patient_detail_mob as PatientDetailMob,
+                        	frm.study_detail_examid as StudyDetailExamID,
+                        	frm.study_detail_date as StudyDetailDate,
+                        	frm.study_detail_institution as StudyDetailInstitution,
+                        	frm.study_detail_operator as StudyDetailOperator,
+                        	frm.study_detail_indication as StudyDetailIndication,
+                        	frm.study_detail_quality as StudyDetailQuality,
+                        	frm.study_detail_height as StudyDetailHeight,
+                        	frm.study_detail_weight as StudyDetailWeight,
+                        	frm.study_detail_bsa as StudyDetailBSA,
+                        	frm.study_detail_bmi as StudyDetailBMI,
+                        	frm.study_detail_bp as StudyDetailBP,
+                        	frm.study_detail_hrrytham as StudyDetailHRRytham
+                        FROM 
+                        	form_user_data frm, 
+                        	users u
+                        WHERE
+                        	(	(frm.created_by = u.id)
+                        	OR		
+                        		(u.id = (
+                        							SELECT 
+                        								fs.user_id 
+                        							FROM 
+                        								form_shares fs 
+                        							WHERE 
+                        								fs.form_id = frm.id
+                        							)
+                        		)
+                        	)
+                        AND
+                        	u.userkey = '".$this->db->real_escape_string($userauth_key)."'
+                        AND
+                        	frm.id = '".$this->db->real_escape_string($formkey)."'	
+                        	";
+        	
+        	$result = $this -> db -> query ($query);
+                        
+            $formdata = array();
+            $mediaarray = array();
+            
+            if ($result->num_rows > 0) {
+				$formdata = $result->fetch_assoc();	
+                $formdata['status'] = 'OK';
+                /* free result set */
+                $result->free();
+                $query = "	SELECT 
+                				media.id,
+                				media.media_type,
+                				media.path 
+                			FROM
+                				form_media_details media
+                			WHERE 
+                				form_id = '" . $formkey . "'";
+               $result = $this -> db -> query ($query);
+                
+               if($result->num_rows > 0)
+               {
+               	$formdata['media'] = '1';
+	                while($media = $result->fetch_assoc())
+	                {
+	                	if($media['media_type'] == 'VIDEO') {
+	                		$mediaarray['videos']['video'][]['attrs'] = array('id' => $media['id'],
+	                											'text' =>$media['path']
+	                											);
+	                	} else if($media['media_type'] == 'IMAGE') {
+	                		$mediaarray['images']['image'][]['attrs'] = array('id' => $media['id'],
+	                											'text' =>$media['path']
+	                											);						                		
+	                	}
+	                	
+	                }
+               }
+            }
+            
+            return $formdata + $mediaarray;
+        }
+        
+        public function getForms($userauth_key) {
+           $query = "SELECT 
+           					frm.id as formKey,
+                        	frm.patient_detail_ur as PatientDetailUR,
+                        	frm.patient_detail_surname as PatientDetailSurname,
+                        	frm.patient_detail_firstname as PatientDetailFirstName
+                        FROM 
+                        	form_user_data frm, 
+                        	users u
+                        WHERE
+                        	(	(frm.created_by = u.id)
+                        	OR		
+                        		(u.id = (
+                        							SELECT 
+                        								fs.user_id 
+                        							FROM 
+                        								form_shares fs 
+                        							WHERE 
+                        								fs.form_id = frm.id
+                        							)
+                        		)
+                        	)
+                        AND
+                        	u.userkey = '".$this->db->real_escape_string($userauth_key)."'
+                       ";
+        	
+        	$result = $this -> db -> query ($query);
+            if($result->num_rows > 0)
+            {            
+            $formdata = array();
+			while($data = $result->fetch_assoc())
+			{
+				//$iscompleted = 	$data['is_completed'];
+				//if($data['is_completed'])
+				//{
+				//	unset($data['is_completed']);
+				//	$formdata['completed']['form'][]['nodes'] = $data;
+				//}
+				//else
+				//{
+				//	unset($data['is_completed']);
+				//	$formdata['incompleted']['form'][]['nodes'] = $data;
+				//}
+				$formdata['forms']['form'][]['nodes'] = $data;
+			}        
+			    
+            $formdata['status'] = 'OK';
+            
+            return $formdata;
+            }
+            else
+            {
+        		return array('status' => 'error', 'error' => 'No Forms Found.');
+            }
+        }
+        
+        public function createForm($data) {
+        
+        
+           
+            $selectQuery = 'SELECT u.id,u.faculty 
+            FROM 
+            	users u 
+            WHERE
+            	u.userkey = "'.$data->authKey.'"';
+
+            $result = $this -> db -> query ($selectQuery);
+
+            if($result->num_rows > 0)
+            {
+            	$user = $result->fetch_assoc();
+            	if(isset($data->formKey) && $data->formKey != '')
+            	{
+            		$str = 'UPDATE form_user_data ';
+            	}
+            	else
+            	{
+            		$str = 'INSERT INTO form_user_data ';
+            	}
+            	$str .= '
+            	SET
+            		created_by = "' . $this->db->real_escape_string( $user['id'] ).'" ,
+            		patient_detail_ur = "' . $this->db->real_escape_string( $data->PatientDetailUR ).'" ,
+                    patient_detail_dob  = "' . $this->db->real_escape_string( $data-> PatientDetailDOB ).'" ,
+                    patient_detail_age  = "' . $this->db->real_escape_string( $data-> PatientDetailAge ).'" ,
+                    patient_detail_sex  = "' . $this->db->real_escape_string( $data-> PatientDetailSex ).'" ,
+                    patient_detail_surname  = "' . $this->db->real_escape_string( $data-> PatientDetailSurname ).'" ,
+                    patient_detail_firstname  = "' . $this->db->real_escape_string( $data-> PatientDetailFirstName ).'" ,
+                    patient_detail_address  = "' . $this->db->real_escape_string( $data-> PatientDetailAddress ).'" ,
+                    patient_detail_suburb  = "' . $this->db->real_escape_string( $data-> PatientDetailSuburb ).'" ,
+                    patient_detail_state  = "' . $this->db->real_escape_string( $data-> PatientDetailState ).'" ,
+                    patient_detail_postcode  = "' . $this->db->real_escape_string( $data-> PatientDetailPostCode ).'" ,
+                    patient_detail_email  = "' . $this->db->real_escape_string( $data-> PatientDetailEmail ).'" ,
+                    patient_detail_tel  = "' . $this->db->real_escape_string( $data-> PatientDetailTel ).'" ,
+                    patient_detail_mob  = "' . $this->db->real_escape_string( $data-> PatientDetailMob ).'" ,
+                    study_detail_examid  = "' . $this->db->real_escape_string( $data-> StudyDetailExamID ).'" ,
+                    study_detail_date  = "' . $this->db->real_escape_string( $data-> StudyDetailDate ).'" ,
+                    study_detail_institution  = "' . $this->db->real_escape_string( $data-> StudyDetailInstitution ).'" ,
+                    study_detail_operator  = "' . $this->db->real_escape_string( $data-> StudyDetailOperator ).'" ,
+                    study_detail_indication  = "' . $this->db->real_escape_string( $data-> StudyDetailIndication ).'" ,
+                    study_detail_quality  = "' . $this->db->real_escape_string( $data-> StudyDetailQuality ).'" ,
+                    study_detail_height  = "' . $this->db->real_escape_string( $data-> StudyDetailHeight ).'" ,
+                    study_detail_weight  = "' . $this->db->real_escape_string( $data-> StudyDetailWeight ).'" ,
+                    study_detail_bsa  = "' . $this->db->real_escape_string( $data-> StudyDetailBSA ).'" ,
+                    study_detail_bmi  = "' . $this->db->real_escape_string( $data-> StudyDetailBMI ).'" ,
+                    study_detail_bp  = "' . $this->db->real_escape_string( $data-> StudyDetailBP ).'" ,
+                    form_complete  = "1" ,
+                    study_detail_hrrytham  = "' . $this->db->real_escape_string( $data-> StudyDetailHRRytham ) . '"';
+            	
+            	if(isset($data->formKey) && $data->formKey != '')
+            	{
+            		$str .= 'WHERE id = "'. $data->formKey .'"';
+            	}
+                            
+                $result = $this -> db -> query ($str);
+                
+                if ($result) {
+                    return  array ("id" => '1',"name"   => 'Form Added/Updated Successfully');
+                } else {
+                    return  array ("id" => '0',"name"   => 'Error while adding form');
+                }
+            }
+            else
+            {
+                return  array ("id" => '0',"name"   => 'Authentication Failed');    
+            }
+        }
+        
+		public function searchForms($inputObj) {
+			
+              	$qry = '';
+            if(isset($inputObj->PatientDetailSurname) && $inputObj->PatientDetailSurname != '')
+			{
+				$qry .= ' AND patient_detail_surname LIKE "%'.$inputObj->PatientDetailSurname.'%" ';
+			}
+			if(isset($inputObj->PatientDetailFirstName) && $inputObj->PatientDetailFirstName != '')
+			{
+				$qry .= ' AND patient_detail_firstname LIKE "%'.$inputObj->PatientDetailFirstName.'%" ';
+			}
+			if(isset($inputObj->PatientDetailUR) && $inputObj->PatientDetailUR != '')
+			{
+				$qry .= ' AND patient_detail_ur LIKE "%'.$inputObj->PatientDetailUR.'%" ';
+			}
+			
+            	
+            $query = "SELECT 
+           					frm.id as formKey,
+                        	frm.patient_detail_ur as PatientDetailUR,
+                        	frm.patient_detail_surname as PatientDetailSurname,
+                        	frm.patient_detail_firstname as PatientDetailFirstName,
+                        	frm.form_complete as is_completed
+                        FROM 
+                        	form_user_data frm, 
+                        	users u
+                        WHERE
+                        	(frm.created_by = u.id)
+                        AND
+                        	u.userkey = '".$this->db->real_escape_string($inputObj->auth)."'
+                       ";
+           	$query .= $qry;	
+        	
+        	$result = $this -> db -> query ($query);
+
+        	if($result->num_rows > 0)
+        	{
+	            $formdata = array();
+	            
+				while($data = $result->fetch_assoc())
+				{
+					$iscompleted = 	$data['is_completed'];
+					if($data['is_completed'])
+					{
+						unset($data['is_completed']);
+						$formdata['completed']['form'][]['nodes'] = $data;
+					}
+					else
+					{
+						unset($data['is_completed']);
+						$formdata['incompleted']['form'][]['nodes'] = $data;
+					}
+				}
+        		return $formdata;
+        	}
+        	else
+        	{
+        		return array('status' => 'error', 'error' => 'No Forms Found.');
+        	}                    
+            
+        }
+        
+        public function shareForm($inputObj) {
+        	$qry = 'SELECT 
+        				id 
+        			FROM 
+        				form_user_data f,
+        				users u 
+        			WHERE 
+        				u.id = f.created_by 
+        			AND 
+        				u.userkey = \''.$inputObj->authkey.'\'';
+        	$result = $this -> db -> query ($qry);
+        	if($result->num_rows <= 0)
+	        	return array('status' => 'error', 'error' => 'Authentication Failed.');
+    		
+	        if($inputObj->userid > 0)
+	        {
+		        $qry = 'SELECT 
+	        				id 
+	        			FROM 
+	        				form_shares f
+	        			WHERE 
+	        				f.form_id = '. (int)$inputObj->formid .' 
+	        			AND 
+	        				f.user_id = '. (int)$inputObj->userid;
+	        	$result = $this -> db -> query ($qry);
+	        	if($result->num_rows <= 0)
+		        	return array('status' => 'error', 'error' => 'Form already shared to this user.');
+		        
+		        $qry = 'INSERT 
+		        		INTO 
+		        			form_shares(form_id,user_id,added_date) 
+		        		VALUES
+		        			('. (int)$inputObj->formid .','. (int)$inputObj->userid .','. date('Y-m-d H:i:s') .')';
+		        $result = $this -> db -> query ($qry);
+		        if($result)
+		        {
+		        return array('status' => 'OK', 'error' => 'Form shared successfully.');
+		        }
+		        else
+		        {
+		        return array('status' => 'OK', 'error' => 'Error while processing. Please try again.');
+		        }		
+	        	
+	        	
+	        }else if($inputObj->groupid > 0)
+	        {
+		        $qry = 'SELECT 
+	        				id 
+	        			FROM 
+	        				form_groupshares f
+	        			WHERE 
+	        				f.form_id = '. (int)$inputObj->formid .' 
+	        			AND 
+	        				f.group_id = '. (int)$inputObj->groupid;
+	        	$result = $this -> db -> query ($qry);
+		        if($result->num_rows <= 0)
+		        	return array('status' => 'error', 'error' => 'Form already shared to this group.');
+		        
+		        $qry = 'INSERT 
+		        		INTO 
+		        			form_groupshares(form_id,group_id,added_date) 
+		        		VALUES
+		        			('. (int)$inputObj->formid .','. (int)$inputObj->groupid .','. date('Y-m-d H:i:s') .')';
+		        $result = $this -> db -> query ($qry);	
+		        if($result)
+		        {
+		        return array('status' => 'OK', 'error' => 'Form shared successfully.');
+		        }
+		        else
+		        {
+		        return array('status' => 'OK', 'error' => 'Error while processing. Please try again.');
+		        }	
+	        }
+	        else
+	        {
+	        	return array('status' => 'error', 'error' => 'No User/Group specified.');
+	        }
+
+	        
+                          
+            
+        }
+        
+     
+    }

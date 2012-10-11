@@ -1,0 +1,62 @@
+<?php
+
+	$urls = array (
+	'Home' => 'api/home.php',
+	'Registration' => 'api/register.php',
+'Login' => 'api/login.php',
+'Password Reminder' => 'api/passwordreminder.php',
+'Change Password' => 'api/changepassword.php',
+'Faculty & Speciality' => 'api/faculty_specialty.php',
+'Subscription' => 'api/subscription.php',
+'Form Submission' => 'api/createform.php',
+'Search Forms' => 'api/searchform.php',
+'News' => 'api/news.php',
+'Create Group' => 'api/creategroup.php',
+'Join Group' => 'api/groupactions.php',
+'Unjoin Group' => 'api/groupactions.php',
+'Approve Group Request' => 'api/groupactions.php',
+'Reject Group Request' => 'api/groupactions.php',
+'Latest Groups' => 'api/latestgroups.php',
+'Group Request Status' => 'api/grouprequests.php',
+'My Group Requests' => 'api/mygrouprequests.php',
+'Users List' => 'api/userlist.php',
+'Search User' => 'api/searchusers.php',
+'Auto Suggest' => 'api/message_autosuggest.php',
+'News Detail' => 'api/newsdetails.php',
+'View Forms' => 'api/viewallforms.php',
+'View Single Form' => 'api/form.php',
+'My Groups' => 'api/groups.php',
+'User Profile' => 'api/profile.php',
+'Messages' => 'api/viewmessages.php',
+'View Message' => 'api/viewmessage.php',
+'Group User List' => 'api/groupuserlist.php',
+'Search Groups' => 'api/searchgroups.php',
+'Group Messages' => 'api/groupmessages.php');
+			
+?>
+<script type="text/javascript">
+	function changeAction(select) {
+		var url = select.value;
+		if(url == 'api/register.php')
+		document.getElementById('filename').style.display = '';
+		else
+		document.getElementById('filename').style.display = 'none';
+		
+		document.demoform.action = url;
+	}
+</script>
+<form action="" method="post" id="demoform" name="demoform" enctype="multipart/form-data">
+	Url: <select onchange="changeAction(this);">
+			<option value="">Select a service</option>
+<?php
+		foreach ($urls as $name => $url)
+			print "<option value='$url'>$name</option>";
+?>
+</select>
+<br />
+Request:<br />
+<textarea name="data" rows="20" cols="75"></textarea><br />
+<input type="file" name="filename" id="filename" style="display:none;"><br />
+
+	<input type="submit" value="Try!" />
+</form>

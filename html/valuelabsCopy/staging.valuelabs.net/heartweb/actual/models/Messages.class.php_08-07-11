@@ -1,0 +1,173 @@
+<?php
+  class Messages_Model {
+        
+        private $db;
+        
+        public function __construct() {
+            global $db;
+            
+            $this -> db =& $db;
+        }
+        
+        // retrieves message based on message id
+        public function getMessage($userauth_key,$messageid) {
+                     	
+         	$query = "SELECT 
+           					msg.id ,
+                        	msg.message_from ,
+                        	msg.message_to ,
+                        	msg.message_cc ,
+                        	msg.message_subject,
+                        	msg.message_body,
+                        	msg.added_date
+                        FROM 
+                        	messages msg, 
+                        	messages_to to,
+                        	users u
+                        WHERE
+                        	to.message_id = msg.id
+                        AND
+                        	(
+                        		(	to.to = u.id 
+                        			AND 
+                        			to.type = 'USER'
+                        		) 
+                        		OR 
+                        		(	to.to =	(
+                        						SELECT 
+                        							gu.group_id 
+                        						FROM 
+                        							group_users gu
+                        						WHERE gu.user_id = u.id 
+                        						)
+                        					)
+                        			AND
+                        			to.type = 'GROUP'	
+                        	)		
+                        AND
+                        	u.userkey = '".$this->db->real_escape_string($userauth_key)."'
+                       	AND
+                       		msg.id = ". $messageid ."
+                        ";
+           
+        	$result = $this -> db -> query ($query);
+            if(isset($result->num_rows) && $result->num_rows > 0)
+            {            
+	            $formdata = array();
+				while($data = $result->fetch_assoc())
+				{
+						$formdata['messages']['message'][]['nodes'] = $data;	
+				}        
+				    
+	            $formdata['status'] = 'OK';
+	            
+	            return $formdata;
+            }
+            else
+            {
+        		return array('status' => 'error', 'error' => 'No Messages Found.');
+            }
+        }
+        
+        // get all messages from the passed last update date.
+        public function getMessages($userauth_key,$lastupdatedate) {
+
+         	$lastupdatedate = ($lastupdatedate == '')?"'".date('Y-m-d H:i:s')."'":"lkeys.created";
+         	
+         	$query = "SELECT 
+           					msg.id ,
+                        	msg.message_from ,
+                        	msg.message_to ,
+                        	msg.message_cc ,
+                        	msg.message_subject,
+                        	SUBSTRING(msg.message_body,0,50) as message_body,
+                        	msg.added_date
+                        FROM 
+                        	messages msg, 
+                        	messages_to to,
+                        	users u
+                        WHERE
+                        	to.message_id = msg.id
+                        AND
+                        	(
+                        		(	to.to = u.id 
+                        			AND 
+                        			to.type = 'USER'
+                        		) 
+                        		OR 
+                        		(	to.to =	(
+                        						SELECT 
+                        							gu.group_id 
+                        						FROM 
+                        							group_users gu
+                        						WHERE gu.user_id = u.id 
+                        						)
+                        					)
+                        			AND
+                        			to.type = 'GROUP'	
+                        	)		
+                        AND
+                        	u.userkey = '".$this->db->real_escape_string($userauth_key)."'
+                       	AND
+                       		to.added_date > '" . $lastupdatedate . "'";
+           
+        	$result = $this -> db -> query ($query);
+            if(isset($result->num_rows) && $result->num_rows > 0)
+            {            
+	            $formdata = array();
+				while($data = $result->fetch_assoc())
+				{
+						$formdata['messages']['message'][]['nodes'] = $data;	
+				}        
+				    
+	            $formdata['status'] = 'OK';
+	            
+	            return $formdata;
+            }
+            else
+            {
+        		return array('status' => 'error', 'error' => 'No Messages Found.');
+            }
+        }
+        
+        public function getSentMessages($userauth_key,$lastupdatedate) {
+
+         	$subQry = ($lastupdatedate == '')?'':" AND msg.added_date > '" . $lastupdatedate . "'";
+         	
+         	$query = "SELECT 
+           					msg.id ,
+                        	msg.message_from ,
+                        	msg.message_to ,
+                        	msg.message_cc ,
+                        	msg.message_subject,
+                        	SUBSTRING(msg.message_body,0,50) as message_body,
+                        	msg.added_date
+                        FROM 
+                        	messages msg, 
+                        	users u
+                        WHERE
+                       		u.id = msg.message_from		
+                        AND
+                        	u.userkey = '".$this->db->real_escape_string($userauth_key)."'
+                       	" . $subQry;
+           
+        	$result = $this -> db -> query ($query);
+            if(isset($result->num_rows) && $result->num_rows > 0)
+            {            
+	            $formdata = array();
+				while($data = $result->fetch_assoc())
+				{
+						$formdata['messages']['message'][]['nodes'] = $data;	
+				}        
+				    
+	            $formdata['status'] = 'OK';
+	            
+	            return $formdata;
+            }
+            else
+            {
+        		return array('status' => 'error', 'error' => 'No Messages Found.');
+            }
+        }
+        
+  } 

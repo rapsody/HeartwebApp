@@ -1,0 +1,418 @@
+SELECT * from patients where id = 31 -  - 
+Hsbsb - -  Thvs  
+SELECT * from patients where id = 32 -  - 
+Qwet - -  Rivh  
+SELECT * from patients where id = 33 -  - 
+Dscc - -  Ydff  
+SELECT * from patients where id = 31 -  - 
+Hsbsb - -  Thvs  - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+Qwet - -  Rivh  - Qwet - 
+SELECT * from patients where id = 33 -  - 
+Dscc - -  Ydff  - Dscc - 
+SELECT * from patients where id = 31 -  - 
+Hsbsb - -  Thvs  - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+Qwet - -  Rivh  - Qwet - 
+SELECT * from patients where id = 33 -  - 
+Dscc - -  Ydff  - Dscc - 
+SELECT * from patients where id = 31 -  - 
+Hsbsb - -  Thvs  - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+Qwet - -  Rivh  - Qwet - 
+SELECT * from patients where id = 33 -  - 
+Dscc - -  Ydff  - Dscc - 
+SELECT * from patients where id = 31 -  - 
+Hsbsb - -  Thvs  - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+Qwet - -  Rivh  - Qwet - 
+SELECT * from patients where id = 33 -  - 
+Dscc - -  Ydff  - Dscc - 
+SELECT * from patients where id = 31 -  - 
+Hsbsb - -  Thvs  - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+Qwet - -  Rivh  - Qwet - 
+SELECT * from patients where id = 33 -  - 
+Dscc - -  Ydff  - Dscc - 
+SELECT * from patients where id = 31 -  - 
+Hsbsb - -  Thvs  - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+Qwet - -  Rivh  - Qwet - 
+SELECT * from patients where id = 33 -  - 
+Dscc - -  Ydff  - Dscc - 
+SELECT * from patients where id = 31 -  - 
+Hsbsb - -  Thvs  - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+Qwet - -  Rivh  - Qwet - 
+SELECT * from patients where id = 33 -  - 
+Dscc - -  Ydff  - Dscc - 
+SELECT * from patients where id = 1 -  - 
+Jack - -  Black  - Jack - 
+SELECT * from patients where id = 18 -  - 
+Jax - -  Jack  - Jax - 
+SELECT * from patients where id = 19 -  - 
+Jax - -  Jack  - Jax - 
+SELECT * from patients where id = 20 -  - 
+rich - -  Blogs  - rich - 
+SELECT * from patients where id = 34 -  - 
+ - -    -  - 
+SELECT * from patients where id = 1 -  - 
+Jack - -  Black  - Jack - 
+SELECT * from patients where id = 18 -  - 
+Jax - -  Jack  - Jax - 
+SELECT * from patients where id = 19 -  - 
+Jax - -  Jack  - Jax - 
+SELECT * from patients where id = 20 -  - 
+rich - -  Blogs  - rich - 
+SELECT * from patients where id = 34 -  - 
+ - -    -  - 
+SELECT * from patients where id = 31 -  - 
+Hsbsb - -  Thvs  - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+Qwet - -  Rivh  - Qwet - 
+SELECT * from patients where id = 33 -  - 
+Dscc - -  Ydff  - Dscc - 
+SELECT * from patients where id = 31 -  - 
+Hsbsb - -  Thvs  - test2 - 
+SELECT * from patients where id = 32 -  - 
+Qwet - -  Rivh  - test2 - 
+SELECT * from patients where id = 33 -  - 
+Dscc - -  Ydff  - test2 - 
+SELECT * from patients where id = 31 -  - 
+Hsbsb - -  Thvs  - test2 - 
+SELECT * from patients where id = 32 -  - 
+Qwet - -  Rivh  - test2 - 
+SELECT * from patients where id = 33 -  - 
+Dscc - -  Ydff  - test2 - 
+SELECT * from patients where id = 31 -  - 
+Hsbsb - -  Thvs  - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+Qwet - -  Rivh  - Qwet - 
+SELECT * from patients where id = 33 -  - 
+Dscc - -  Ydff  - Dscc - 
+SELECT * from patients where id = 31 -  - 
+Hsbsb - -  Thvs  - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+Qwet - -  Rivh  - Qwet - 
+SELECT * from patients where id = 33 -  - 
+Dscc - -  Ydff  - Dscc - 
+SELECT * from patients where id = 31 -  - 
+Hsbsb - -  Thvs  - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+Qwet - -  Rivh  - Qwet - 
+SELECT * from patients where id = 33 -  - 
+Dscc - -  Ydff  - Dscc - 
+SELECT * from patients where id = 31 -  - 
+Hsbsb - -  Thvs  - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+Qwet - -  Rivh  - Qwet - 
+SELECT * from patients where id = 33 -  - 
+Dscc - -  Ydff  - Dscc - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 11 -  - 
+ - -    - Jack - 
+SELECT * from patients where id = 8 -  - 
+ - -    - Linda - 
+SELECT * from patients where id = 30 -  - 
+ - -    - David - 
+SELECT * from patients where id = 11 -  - 
+ - -    - Jack - 
+SELECT * from patients where id = 8 -  - 
+ - -    - Linda - 
+SELECT * from patients where id = 30 -  - 
+ - -    - David - 
+SELECT * from patients where id = 6 -  - 
+ - -    - Sparrow - 
+SELECT * from patients where id = 7 -  - 
+ - -    - John - 
+SELECT * from patients where id = 12 -  - 
+ - -    - Fred - 
+SELECT * from patients where id = 28 -  - 
+ - -    - Joan - 
+SELECT * from patients where id = 6 -  - 
+ - -    - Sparrow - 
+SELECT * from patients where id = 7 -  - 
+ - -    - John - 
+SELECT * from patients where id = 12 -  - 
+ - -    - Fred - 
+SELECT * from patients where id = 28 -  - 
+ - -    - Joan - 
+SELECT * from patients where id = 6 -  - 
+ - -    - Sparrow - 
+SELECT * from patients where id = 7 -  - 
+ - -    - John - 
+SELECT * from patients where id = 12 -  - 
+ - -    - Fred - 
+SELECT * from patients where id = 28 -  - 
+ - -    - Joan - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 42 -  - 
+ - -    - Hsjs - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 42 -  - 
+ - -    - Hsjs - 
+SELECT * from patients where id = 43 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 44 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 42 -  - 
+ - -    - Hsjs - 
+SELECT * from patients where id = 43 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 44 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 42 -  - 
+ - -    - Hsjs - 
+SELECT * from patients where id = 43 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 44 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 42 -  - 
+ - -    - Hsjs - 
+SELECT * from patients where id = 43 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 44 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 42 -  - 
+ - -    - Hsjs - 
+SELECT * from patients where id = 43 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 44 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 42 -  - 
+ - -    - Hsjs - 
+SELECT * from patients where id = 43 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 44 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 45 -  - 
+ - -    - Qeerty - 
+SELECT * from patients where id = 42 -  - 
+ - -    - Hsjs - 
+SELECT * from patients where id = 43 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 44 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 45 -  - 
+ - -    - Qeerty - 
+SELECT * from patients where id = 46 -  - 
+ - -    - Qwe - 
+SELECT * from patients where id = 42 -  - 
+ - -    - Hsjs - 
+SELECT * from patients where id = 43 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 44 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 45 -  - 
+ - -    - Qeerty - 
+SELECT * from patients where id = 46 -  - 
+ - -    - Qwe - 
+SELECT * from patients where id = 42 -  - 
+ - -    - Hsjs - 
+SELECT * from patients where id = 43 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 44 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 45 -  - 
+ - -    - Qeerty - 
+SELECT * from patients where id = 46 -  - 
+ - -    - Qwe - 
+SELECT * from patients where id = 42 -  - 
+ - -    - Hsjs - 
+SELECT * from patients where id = 43 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 44 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 45 -  - 
+ - -    - Qeerty - 
+SELECT * from patients where id = 46 -  - 
+ - -    - Qwe - 
+SELECT * from patients where id = 42 -  - 
+ - -    - Hsjs - 
+SELECT * from patients where id = 43 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 44 -  - 
+ - -    - Trst - 
+SELECT * from patients where id = 31 -  - 
+ - -    - Hsbsb - 
+SELECT * from patients where id = 32 -  - 
+ - -    - Qwet - 
+SELECT * from patients where id = 33 -  - 
+ - -    - Dscc - 
+SELECT * from patients where id = 45 -  - 
+ - -    - Qeerty - 
+SELECT * from patients where id = 46 -  - 
+ - -    - Qwe - 
+SELECT * from patients where id = 1 -  - 
+ - -    - Jack - 
+SELECT * from patients where id = 1 -  - 
+ - -    - Jack - 
+SELECT * from patients where id = 1 -  - 
+ - -    - Jack - 
+SELECT * from patients where id = 1 -  - 
+ - -    - test - 
+SELECT * from patients where id = 1 -  - 
+ - -    - test - 
+SELECT * from patients where id = 1 -  - 
+ - -    - test - 
+SELECT * from patients where id = 1 -  - 
+ - -    - test - 
+SELECT * from patients where id = 1 -  - 
+ - -    - test - 
+SELECT * from patients where id = 1 -  - 
+ - -    - test - 
+SELECT * from patients where id = 2 -  - 
+ - -    - Berty - 
+SELECT * from patients where id = 1 -  - 
+ - -    - test - 
+SELECT * from patients where id = 2 -  - 
+ - -    - Berty - 
+SELECT * from patients where id = 1 -  - 
+ - -    - test - 
+SELECT * from patients where id = 2 -  - 
+ - -    - Berty - 
+SELECT * from patients where id = 1 -  - 
+ - -    - test - 
+SELECT * from patients where id = 2 -  - 
+ - -    - Berty - 
+SELECT * from patients where id = 1 -  - 
+ - -    - test - 
+SELECT * from patients where id = 2 -  - 
+ - -    - Berty - 
+SELECT * from patients where id = 1 -  - 
+ - -    - test - 
+SELECT * from patients where id = 2 -  - 
+ - -    - Berty - 
+SELECT * from patients where id = 1 -  - 
+ - -    - test - 
+SELECT * from patients where id = 2 -  - 
+ - -    - Berty - 
+SELECT * from patients where id = 1 -  - 
+ - -    - test - 
+SELECT * from patients where id = 2 -  - 
+ - -    - Berty - 
+SELECT * from patients where id = 1 -  - 
+ - -    - test - 
+SELECT * from patients where id = 2 -  - 
+ - -    - Berty - 
+SELECT * from patients where id = 1 -  - 
+ - -    - test - 
+SELECT * from patients where id = 2 -  - 
+ - -    - Berty - 

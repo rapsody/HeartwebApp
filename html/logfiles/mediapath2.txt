@@ -1,0 +1,8 @@
+media path http://108.171.185.56/uploads/formdata/02120901045711_img1.jpg 
+media path http://108.171.185.56/uploads/formdata/02120901045711_img1.jpg 
+ /var/www/html//pdf/deidentified_-2012-09-02-2932.pdf - media path http://108.171.185.56/uploads/formdata/02120901045711_img1.jpg 
+ /var/www/html//pdf/deidentified_-2012-09-02-2932.pdf - media path http://108.171.185.56/uploads/formdata/02120901045711_img1.jpg 
+ /var/www/html//pdf/deidentified_-2012-09-02-2932.pdf - media path /var/www/html//pdf/02120901045711_img1.jpg 
+ /var/www/html//pdf/deidentified_-2012-09-02-2932.pdf - media path /var/www/html//data/uploads/02120901045711_img1.jpg 
+  /var/www/html//uploads/formdata/02120901045711_img1.jpg 
+image/jpeg -   /var/www/html//uploads/formdata/02120901045711_img1.jpg 

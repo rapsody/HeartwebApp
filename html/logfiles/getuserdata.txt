@@ -1,0 +1,16 @@
+SELECT * FROm users  WHERE userkey = 'f6612b65b2bc7c22d74d01d307cc6944'  AND	status != '2'  
+results   
+results   
+results1results   
+userid => 174 
+Firstname => Joe 
+Lastname => test 
+Faculty => 0 
+Speciality => 0 
+Country =>  
+State =>  
+Location => 0 
+ImageData =>  
+Affiliation => 0 
+Subject =>  
+Privacy => public 

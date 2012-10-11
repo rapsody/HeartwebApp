@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="iso-8859-1"?><request><authkey>e4791c0fd92bb4a4e7c68b8bd9dacad1</authkey><groupid>4</groupid><formid>16</formid><userid>0</userid></request>
+<?xml version="1.0" encoding="iso-8859-1"?><request><authkey>e4791c0fd92bb4a4e7c68b8bd9dacad1</authkey><groupid>4</groupid><formid>14</formid><userid>0</userid></request>
+<?xml version="1.0" encoding="iso-8859-1"?><request><authkey>e4791c0fd92bb4a4e7c68b8bd9dacad1</authkey><groupid>4</groupid><formid>16</formid><userid>0</userid></request>
+<?xml version="1.0" encoding="iso-8859-1"?><request><authkey>936449b385c93c8756d6e17a06c8d931</authkey><groupid>6</groupid><formid>5</formid><userid>0</userid></request>
+<?xml version="1.0" encoding="iso-8859-1"?><request><authkey>936449b385c93c8756d6e17a06c8d931</authkey><groupid>6</groupid><formid>5</formid><userid>0</userid></request>
+<?xml version="1.0" encoding="iso-8859-1"?><request><authkey>67c507e163ef74a5ae645498c8b716c1</authkey><groupid>7</groupid><formid>2</formid></request>
+<?xml version="1.0" encoding="iso-8859-1"?><request><authkey>67c507e163ef74a5ae645498c8b716c1</authkey><groupid>7</groupid><formid>21</formid></request>

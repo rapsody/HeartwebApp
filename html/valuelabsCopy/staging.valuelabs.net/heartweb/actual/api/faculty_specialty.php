@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+  <faculties>
+    <faculty>
+      <id>1</id>
+      <name>XRay</name>
+    </faculty>
+    <faculty>
+      <id>2</id>
+      <name>MRI</name>
+    </faculty>
+  </faculties>
+  <specialities>
+    <speciality>
+      <id>1</id>
+      <name>SP1</name>
+    </speciality>
+    <speciality>
+      <id>2</id>
+      <name>SP2</name>
+    </speciality>
+  </specialities>
+</response>

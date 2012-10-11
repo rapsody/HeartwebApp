@@ -1,0 +1,40 @@
+<?php
+    include_once "../includes/webservice.inc.php";
+    
+    $webService = new Webservices_Writer();
+    $webService -> init();
+    
+    /* search user profile */
+    
+    $usersObj        = new Users();
+    
+    $data = (isset($_POST['data']))?$_POST['data']:'';
+    $parsexml       = @simplexml_load_string($data);
+    if ($data && $parsexml) {
+        $parsexml       = simplexml_load_string($data);
+
+        $firstname      = $parsexml->firstname; 
+        $lastname    = $parsexml->lastname;
+        if($firstname !='' || $searchquery !=''){
+
+            if($search_result  = $usersObj->getSearchUsers($firstname, $lastname))
+               {
+                $xmls           = array();
+	            $xml            = $webService -> getGroupUsersListAsXML($search_result,'users');
+	            $xmls = array_merge($xml,$xmls);
+               } else {
+               
+                $xmls = $webService -> errorXML('Invalid input'); 
+               }
+            
+        } else {
+          $xmls = $webService -> errorXML('Invalid input'); 
+        }
+    } else {
+
+     $xmls = $webService -> errorXML('Invalid input'); 
+    }
+    
+    $webService -> outputXML($xmls);
+    
+    /* End profile*/

@@ -1,0 +1,5 @@
+GET::
+a:0:{}
+
+POST::
+a:1:{s:4:"data";s:135:"<?xml version="1.0" encoding="iso-8859-1"?><request><formKey>347</formKey><authKey>e2138a98aba923e3bc52f3127da01bb5</authKey></request>";}

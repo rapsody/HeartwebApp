@@ -1,0 +1,473 @@
+<?php
+
+    class Users_Model {
+        
+        
+        private $db;
+        
+		const TBL_LOGIN_KEYS = "login_keys";
+        
+        const TBL_USERS_IN_GROUPS = "users_in_group";
+		
+		const TBL_GROUPS_USERS = "group_users";
+		
+        public function __construct() {
+            global $db;
+            
+            $this -> db =& $db;
+        }
+        
+        public function loadUserProfile($username) {
+            $result = $this -> db -> query (
+                        "SELECT
+                            *
+                        FROM
+                            " .TBL_USERS ."
+                        WHERE
+                            username = '".$username."'"
+                        );
+
+            $return = array();
+                
+            if ($result ) {
+
+                /* fetch associative array */
+                while ($row = $result->fetch_assoc()) {
+                    $return[] = array ("username" => $row['username'],
+                                       "firstname" => $row['first_name'],
+                                       "lastname"  => $row['last_name'],
+                                       "faculty"    => $row['faculty'],
+                                       "specialty" => $row['speciality'],
+                                       "country"    => $row['country'],
+                                       "state"      => $row['state'],
+                                       "image"      => $row['image']
+                                        );
+                }
+
+                /* free result set */
+                $result->free();
+            }
+            
+            return $return;
+        }
+        
+        
+        public function loadListOfSearchUsers($fname, $lname)
+        {
+        $result = $this -> db -> query (
+                        "SELECT
+                            *
+                        FROM
+                            " .TBL_USERS ."
+                        WHERE (first_name LIKE '%".$fname."%' || last_name LIKE '%".$lname."%') && privacy='public'"
+                        );
+
+            $return = array();
+            
+            if ($result ) {
+
+                /* fetch associative array */
+                while ($row = $result->fetch_assoc()) {
+                    $return[] =  array ("firstname" => $row['first_name'],
+                                       "lastname"  => $row['last_name'], 
+                                       "username"  => $row['last_name']
+                                        );
+                }
+
+                /* free result set */
+                $result->free();
+            }
+            
+            return $return;
+        } 
+        
+        public function loadListOfUsers()
+        {
+            $result = $this -> db -> query (
+                        "SELECT
+                            *
+                        FROM
+                            " .TBL_USERS.' '."WHERE privacy='public'"
+                        );
+            $return = array();
+            
+            if ($result ) {
+
+                /* fetch associative array */
+                while ($row = $result->fetch_assoc()) {
+                    $return[] = array ("id" => $row['id'],
+                                       "name"   => $row['first_name'].' '.$row['last_name']
+                                        );
+                }
+
+                /* free result set */
+                $result->free();
+            }
+            
+            return $return;
+        }
+        
+        
+        public function loadGroupUsersList($group_id)
+        {
+        
+        $result = $this -> db -> query (
+                        "SELECT first_name,last_name,username
+                        FROM
+                            " .TBL_USERS.' '."WHERE id IN (select user_id from users_in_group where group_id=$group_id)"
+                        );
+                        
+            $return = array();
+            
+            if ($result ) {
+
+                /* fetch associative array */
+                while ($row = $result->fetch_assoc()) {
+                    $return[] = array ("firstname" => $row['first_name'],
+                                       "lastname"  => $row['last_name'], 
+                                       "username"  => $row['last_name']
+                                        );
+                }
+
+                /* free result set */
+                $result->free();
+            }
+            
+            return $return;
+        }
+        
+        public function checkEmail($email) {
+            $result = $this -> db -> query ("
+                              SELECT
+                                password
+                              FROM
+                                " . TBL_USERS . "
+                              WHERE
+                                username = '" . $email . "'
+                              LIMIT 1
+                                ");
+            
+            if ( !$result or $result -> num_rows < 1) return false;
+            
+            $row = $result -> fetch_assoc();
+            
+            return $row['password'];
+        
+        }
+        
+        // Swaroops
+		public function usernameExists($username)
+        {
+        	$query = '	SELECT 
+        					* 
+        				FROM
+        					users
+        				WHERE
+        					username = "' . $username . '"	';
+        
+        	$result = $this->db->query($query);
+        	
+        	return ($result->num_rows > 0)?true:false;
+        }
+        
+        
+        public function registerUser($data)
+        {
+                $query = '	INSERT 
+                			INTO 
+                				users 
+                			SET
+                            	username = "' . $this->db->real_escape_string($data->username) . '",
+								password  = "' . $this->db->real_escape_string($data->password) . '",
+								first_name = "' . $this->db->real_escape_string($data->first_name) . '",
+								last_name  = "' . $this->db->real_escape_string($data->last_name) . '",
+								faculty  = "' . $this->db->real_escape_string($data->faculty) . '",
+								speciality = "' . $this->db->real_escape_string($data->speciality) . '",
+								country  = "' . $this->db->real_escape_string($data->country) . '",
+								state 	 = "' . $this->db->real_escape_string($data->state) . '",
+								image 	 = "' . $this->db->real_escape_string($data->image) . '",
+								privacy 	 = "' . $this->db->real_escape_string($data->privacy) . '",
+								user_type 		  = "' . $this->db->real_escape_string($data->user_type) . '",
+								device_os 	 = "' . $this->db->real_escape_string($data->device_os) . '",
+								app_version_number = "' . $this->db->real_escape_string($data->app_versionnumber) . '",
+								terms_accepted  = "' . $this->db->real_escape_string($data->terms_accepted) . '",
+								date_terms_accepted = "' . date('Y-m-d H:i:s') . '",
+								date_registered  = "' . date('Y-m-d H:i:s') . '",
+								device_type  = "' . $this->db->real_escape_string($data->device_type) . '",
+								ip_address  = "' . $this->db->real_escape_string($data->ip_address) . '",
+								udid  = "' . $this->db->real_escape_string($data->udid) . '",
+								device_token  = "' . $this->db->real_escape_string($data->device_token) . '",
+								push_notification  = "' . $this->db->real_escape_string($data->push_notification) . '",
+								location  = "' . $this->db->real_escape_string($data->location) . '",
+								userkey  = "' . $this->generateUserKey($data->udid) . '"
+								';
+                            
+                $result = $this -> db -> query ($query);                
+                
+                if ($this -> db -> insert_id > 0) {
+                    return  array ("status" => 'OK',"message"   => 'User Registered Successfully');
+                } else {
+                    return  array ("status" => 'error',"message"   => 'Error while registration.');
+                }
+        }
+        
+		
+		public function userLogin($username, $password, $udid)
+        {
+            $result = $this -> db -> query (
+                        "SELECT
+                            id,
+                            userkey
+                        FROM
+                            " . TBL_USERS . ' ' . "WHERE 
+                            username='" . $username . "' 
+                            AND password='" . $password . "' 
+                            AND udid='" . $udid . "'"
+                        );
+            $return = array();
+            
+            if ($result->num_rows > 0  ) {
+
+                /* fetch associative array */
+                while ($row = $result->fetch_assoc()) {
+                    $return = array ("id" => $row['id'],"authkey"=> $row['userkey'],"name"=>'User Logged In Successsfully' );
+                }
+
+                /* free result set */
+                 $result->free();
+                 return $return;
+            } else {
+                    $return = array ("id" => '0',"name"   => 'Invalid User');
+                    return $return;
+            }
+        }
+        
+         public function generateUserKey($udid) {
+            $uniquekey = md5(rand().$udid);
+/*
+            $query = 'INSERT INTO 
+                    login_keys (
+                                userkey,
+                                udid,
+                                user_id,
+                                created,
+                                status
+                                )
+                        VALUES ("'
+                                .$uniquekey.'","'
+                                .$udid.'","'
+                                .$user_id.'","'
+                                .date('Y-m-d H:i:s').'","'
+                                .'1'.'"
+                                )';
+            if($this -> db -> query($query))*/
+            return  $uniquekey; 
+           // else
+            //return '';
+        }
+        //End
+	
+	    public function changePassword($inputObj) {
+             /* $query = '	SELECT 
+            				user_id 
+            			FROM 
+           				login_keys 
+            			WHERE 
+            				userkey = "'.$inputObj->auth.'" 
+            			AND 
+            				udid = "'.$inputObj->udid.'"'; 
+            
+            $result = $this->db->query ($query);
+            
+            if($result->num_rows > 0)
+            {
+            	$data = $result->fetch_assoc();*/
+            	$query = 'UPDATE  
+                    		users 
+                    	SET 
+                    		password = "'.$inputObj->newpassword.'" WHERE userkey = "'.$inputObj->auth.'" 
+            			AND 
+            				udid = "'.$inputObj->udid.'"'; 
+	            if($this -> db -> query($query)) {
+	            	if($this -> db -> affected_rows > 0) {
+	            		return  array('status' => 'OK');
+	            	} else {
+	            		return  array('status' => 'error','error' => 'Data Not Updated.');
+	            	}
+	            } else {
+	            	return  array('status' => 'error', 'error' => 'Unable to update password.');	
+	            }
+           /* }
+            else
+            {
+            	return  array('status' => 'error', 'error' => 'Invalid Infomation.');	
+            }*/
+            
+        	
+        	
+        }
+        
+        public function passwordValidity($udid,$auth,$oldpassword)
+        {
+        	$query = '	SELECT 
+            				u.id 
+            			FROM 
+            				 users u
+            			WHERE 
+            				u.userkey = "'.$auth.'" 
+            			AND 
+            				u.udid = "'.$udid.'" 
+            			AND 
+            				u.password = "'.$oldpassword.'"'; 
+        	$result = $this->db->query ($query);
+        	return  ($result->num_rows > 0)?true:false;
+        
+        }
+		
+		public function checkUser($userauthkey) {
+    		
+            $result = $this -> db -> query ("
+                              SELECT
+                                user_id
+                              FROM
+                                " . TBL_USERS . "
+                              WHERE
+                                userkey = '" . $userauthkey . "'
+                                ");                       
+            if ( !$result or $result->num_rows < 1) return false;
+            
+            $row = $result -> fetch_assoc();
+            
+            return $row['user_id'];
+        
+        }
+        
+    	public function checkGroup($message_from, $group_owner_id, $message_sub, $message_text) {
+            $result = $this -> db -> query ("
+                              SELECT
+                                uig.user_id
+                              FROM
+                                " . TBL_GROUPS . " g, " . self::TBL_GROUPS_USERS . " uig
+                              WHERE
+                                uig.group_id = g.id AND g.id = '" . $group_owner_id . "'                              
+                                ");
+            
+            if ( !$result or $result -> num_rows < 1) return false;
+            else
+            {            	            
+	            
+	            while ($row = $result->fetch_assoc())
+	            {
+	            	$message_to = $row['user_id'];
+		            $query = 'INSERT INTO 
+		                    messages_form_data (
+		                                message_to,
+		                                message_from,
+		                                user_group,
+		                                message_sub,
+		                                message_text,
+		                                message_sent_on
+		                                )
+		                        VALUES ("'
+		                                .$message_to.'","'
+		                                .$message_from.'","'
+		                                .$group_owner_id.'","'
+		                                .$message_sub.'","'
+		                                .$message_text.'","'
+		                                .date('Y-m-d H:i:s').'"
+		                                )';
+		            $this -> db -> query($query);		            	
+	            }
+	            return true;
+            }
+        }
+
+        public function loadMsgAutoSuggestUsername($username, $userkey)
+        {
+        	$result = $this -> db -> query (
+                        "SELECT
+                            DISTINCT u.username, u.id
+                        FROM
+                            " .TBL_USERS ." u, " . self::TBL_GROUPS_USERS . " gu
+                        WHERE gu.group_id in(SELECT group_id FROM " . self::TBL_GROUPS_USERS . " 
+                        WHERE user_id IN (SELECT id FROM " . TBL_USERS . " WHERE 
+                        userkey = '" . $userkey . "')) AND u.userkey <> '" . $userkey . "'
+                        AND u.username LIKE '" . $username . "%' 
+                        AND gu.user_id = u.id "
+                        );            
+                       
+            $return = array();
+            
+            if ($result ) {
+
+                /* fetch associative array */
+                while ($row = $result->fetch_assoc()) {
+                    $return[] = array ("id" => $row['id'],
+                                       "name" => $row['username'],
+                                        );
+                }
+                
+                 /* free result set */
+                $result->free();
+            }                        
+            return $return;
+        }
+        public function loadMsgAutoSuggestGroupname($username, $userkey)
+        {
+        	$result = $this -> db -> query (
+                        "SELECT
+                            DISTINCT g.group_name, g.id
+                        FROM
+                            " .TBL_GROUPS ." g, " . self::TBL_GROUPS_USERS . " gu
+                        WHERE gu.group_id in(SELECT group_id FROM " . self::TBL_GROUPS_USERS . " 
+                        WHERE user_id IN (SELECT id FROM " . TBL_USERS . " WHERE userkey 
+                        = '" . $userkey . "')) AND g.group_name LIKE '" . $username . "%' 
+                        AND gu.group_id = g.id "
+                        );
+                     
+            $return = array();
+            
+       		if ($result ) {
+
+                // fetch associative array 
+                while ($row = $result->fetch_assoc()) {
+                    $return[] = array ("id" => $row['id'],
+                                       "name" => $row['group_name'],
+                                        );
+                }
+                
+                 // free result set
+                $result->free();
+            }
+            return $return;
+        }
+		
+		
+		
+        public function checkAuthKey($userkey)
+    {
+        $result = $this -> db -> query (
+                        "SELECT
+                            *
+                        FROM
+                            " .TBL_USERS ."
+                        WHERE
+                            userkey = '".$userkey."'"
+                        );
+
+            $return = array();
+                
+            if ($result->num_rows > 0 ) {
+				$result->free();
+				return true;
+              
+                
+            } else {
+            $result->free();
+            return false;
+            
+            }
+    
+    }
+	   
+    }// end fn: Faculites

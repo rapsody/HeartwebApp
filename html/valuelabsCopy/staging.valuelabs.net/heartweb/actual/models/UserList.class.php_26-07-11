@@ -1,0 +1,39 @@
+<?php
+
+    class UserList_Model {
+        
+        
+        private $db;
+        
+        const TABLE = "users";
+        
+        public function __construct() {
+            global $db;
+            
+            $this -> db =& $db;
+        }
+        
+        public function loadUserList() {
+            $result = $this -> db -> query (
+                        "SELECT
+                            *
+                        FROM
+                            " . self::TABLE . ""                     
+                        );
+                        
+            $return = array();
+                
+            if ($result ) {
+
+                /* fetch associative array */
+                while ($row = $result->fetch_assoc()) {
+                    $return[] = array ("firstname" => $row['first_name'], "lastname" => $row['last_name'], "username" => $row['username']);
+                }
+
+                /* free result set */
+                $result->free();
+            }
+            
+            return $return;
+        }
+    }// end fn: UserList

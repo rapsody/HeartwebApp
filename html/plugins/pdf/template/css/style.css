@@ -1,0 +1,198 @@
+body {
+	margin:0px;
+	padding:0px;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:12px;
+}
+
+
+/* Start wrapperContainer  */
+.wrapperContainer{ margin:auto; width:900px;}
+.wrapperContainer .wrapper{ float:left; width:100%; clear:both;}
+ul, li, dt, dl, dd{ margin:0px; padding:0px; list-style:none;}
+
+
+/* Patient Infomation   */
+.patientInfo { float:left; width:100%; clear:both;}
+.patientInfo .pDetails, .patientInfo .sDetails{ float:left; border:3px solid #000080;}
+.patientInfo .pDetails{ width:459px;}
+.patientInfo .sDetails{ width:414px; margin:0 0 0 15px;}
+.patientInfo .pDetails .header, .patientInfo .sDetails .header{ background:url(../images/p_bg.jpg) no-repeat 0 0; width:100%; clear:both; height:26px;  }
+.patientInfo .pDetails .header h2, .patientInfo .sDetails .header h2{ color:#FFF; font-size:16px; line-height:25px; margin:0px; padding:0px 0 0 15px;}
+.form{ float:left; width:100%; clear:both;}
+.form ul li{ float:left; width:100%; clear:both;}
+.form ul li.row1{ padding:10px 0 10px 0;}
+.form ul li.row2, .form ul li.row3, .form ul li.row4, .form ul li.row5{ padding:0px 0 10px 0;}
+.form ul li.row1 dl dt, .form ul li.row1 dl dd{ display:inline-block; clear:none; padding:0 7px 0 7px; *padding:0 5px 0 6px;  float:left;}
+.form ul li.row1 dl dt span{ font-size:9px;}
+.form ul li.row1 dl dd select{ width:44px;}
+.form ul li.row2 dl dt, .form ul li.row2 dl dd{ display:inline-block; float:left; padding:0 8px 0 7px; *padding:0 5px 0 6px; line-height:20px; } 
+.form ul li.row3 dl dt, .form ul li.row3 dl dd{ display:inline-block; float:left; padding:0 8px 0 7px; *padding:0 5px 0 6px; line-height:20px; }
+.form ul li.row4 dl dt, .form ul li.row4 dl dd{ display:inline-block; float:left; padding:0 7px 0 7px; *padding:0 4px 0 6px; line-height:20px; }
+.form ul li.row5 dl dt, .form ul li.row5 dl dd{ display:inline-block; float:left; padding:0 7px 0 7px; *padding:0 4px 0 6px; line-height:20px; }
+.form ul li.row3 dl dt label{ display:inline-block; width:56px; }
+.form ul li.row4 dl dt:first-child label{ display:inline-block; width:56px; }
+.form ul li.row3 dl dd textarea{ width:361px; *width:373px; margin:0px; padding:0px;}
+.form ul li.row3 dl dd input{ width:361px; *width:371px; margin:0px; padding:0px;}
+.form ul li.row5 dl dt:first-child label{ display:inline-block; width:13px; *width:12px; }
+
+
+.sdFrom ul li{ float:left; width:100%; clear:both; padding:0 0 10px 0;}
+.sdFrom ul li.row1{ padding:10px 0 10px 0;}
+
+.sdFrom ul li.row1 dl dt, .sdFrom ul li.row1 dl dd{ display:inline-block; float:left; padding:0 8px 0 5px; *padding:0 5px 0 6px; }
+.sdFrom ul li.row2 dl dt, .sdFrom ul li.row2 dl dd{ display:inline-block; float:left; padding:0 8px 0 5px; *padding:0 5px 0 6px; line-height:20px; }
+.sdFrom ul li.row3 dl dt{ display:inline-block; float:left; padding:0 8px 0 5px; *padding:0 5px 0 6px; line-height:20px; }
+.sdFrom ul li.row3 dl dd{ display:inline-block;  float:left; padding:0 8px 0 25px; *padding:0 5px 0 25px; line-height:20px; }
+.sdFrom ul li.row4 dl dt, .sdFrom ul li.row4 dl dd{ display:inline-block; float:left; padding:0 8px 0 7px; *padding:0 5px 0 6px; line-height:20px; }
+.sdFrom ul li.row5 dl dt, .sdFrom ul li.row5 dl dd{ display:inline-block; float:left; padding:0 8px 0 5px; *padding:0 5px 0 6px; line-height:20px; }
+.sdFrom ul li.row6 dl dt, .sdFrom ul li.row6 dl dd{ display:inline-block; float:left; padding:0 8px 0 5px; *padding:0 5px 0 6px; line-height:20px; }
+.sdFrom ul li.row1 dl dt span{ font-size:9px;}
+.sdFrom ul li.row5 dl dd input{ width:38px; *width:41px;}
+.sdFrom ul li.row4 dl dd textarea{ width:309px; *width:323px; margin:0px; padding:0px;}
+.sdFrom ul li.row6 dl dd input.rhy{ width:131px; *width:128px;}
+.ope{ width:111px; *width:110px;}
+.sdFrom input.date{ width:87px;}
+
+
+
+.ventricular{ float:left; width:100%; clear:both; padding:10px 0 10px 0;}
+.ventricular .col_01, .ventricular .col_02, .ventricular  .col_03, .ventricular .col_04{ float:left; border:3px solid #800000; }
+.ventricular .col_01{ width:264px; background:url(../images/ventricular_bg.jpg) no-repeat 0 0; }
+.ventricular .col_02{ width:259px; margin:0 0 0 10px; background:url(../images/systolic_bg.jpg) no-repeat 0 0;}
+.ventricular .col_03{ width:184px; margin:0 0 0 10px; background:url(../images/ejection_bg.jpg) no-repeat 0 0; }
+.ventricular .col_04{ width:119px; margin:0 0 0 10px; background:url(../images/co_bg.jpg) no-repeat 0 0;}
+.ventricular .col_01 .header, .ventricular .col_02 .header, .ventricular  .col_03 .header, .ventricular .col_04 .header{ float:left; width:100%; clear:both; height:28px; }
+.ventricular .col_01 .header h2, .ventricular .col_02 .header h2, .ventricular  .col_03 .header h2, .ventricular .col_04 .header h2{ margin:0px; padding:0px; font-size:16px; color:#FFF; padding:0 0 0 12px; line-height:25px; }
+.ventricular .col_01 .header h2 span, .ventricular .col_02 .header h2 span, .ventricular  .col_03 .header h2 span, .ventricular .col_04 .header h2 span{ font-size:12px; font-weight:normal;}
+
+.ventricular .col_01 div.content{ float:left; width:100%; clear:both; padding:2px 0 2px 0;}
+.ventricular .col_01 div.content ul li{ float:left; display:inline-block; margin:0 0 0 5px; text-align:center; padding:5px 0 5px 0;}
+.ventricular .col_01 div.content ul li div{ display:block; clear:both; text-align:center;}
+.ventricular .col_01 div.content dl dt, .ventricular .col_01 div.content dl dd{ display:inline-block; float:left; }
+.ventricular .col_01 div.content dl dt{ padding:0 0 0 4px;}
+.ventricular .col_01 div.content dl dd{ padding:3px 10px 0 0;}
+
+
+.ventricular .col_02 div.content{ float:left; width:100%; clear:both; padding:2px 0 2px 0;}
+.ventricular .col_02 div.content ul li{ float:left; display:inline-block; margin:0 0 0 5px; text-align:center; padding:5px 0 5px 0;}
+.ventricular .col_02 div.content ul li div{ display:block; clear:both; text-align:center;}
+.ventricular .col_02 div.content dl dt, .ventricular .col_02 div.content dl dd{ display:inline-block; float:left; }
+.ventricular .col_02 div.content dl dt{ padding:0 0 0 4px;}
+.ventricular .col_02 div.content dl dd{ padding:3px 10px 0 0;}
+
+.ventricular .col_03 div.content{ float:left; width:100%; clear:both; padding:0px 0 10px 0;}
+.ventricular .col_03 div.content tr td{  padding:10px 0 7px 0;}
+.ventricular .col_03 div.content ul li:first-child{ padding:0px 0 20px 0;}
+.ventricular .col_03 div.content ul li label{ float:left; width:40px; padding:0 5px 0 5px; line-height:20px; line-height:20px;}
+.ventricular .col_03 div.content tr td div.input{ float:left; width:35px; *width:32px; border:1px solid #7f9db9; height:20px;}
+
+.ventricular .col_04 div.content{ float:left; width:100%; clear:both; padding:0px 0 10px 0;}
+.ventricular .col_04 div.content ul li{ float:left; clear:both; width:100%; color:both; padding:0 0 12px 0;}
+.ventricular .col_04 div.content ul li:first-child{ padding:0px 0 10px 0;}
+.ventricular .col_04 div.content ul li.row label{ float:left; width:60px; padding:0 5px 0 5px; line-height:20px;}
+.ventricular .col_04 div.content tr.row td{ white-space:nowrap; padding:6px 0 0px 0;}
+.ventricular .col_04 div.content tr.row td div.input{  width:25px; border:1px solid #7f9db9; height:20px; }
+.ventricular .col_04 div.content tr.row2 td div.input{  width:25px; border:1px solid #7f9db9; height:20px; }
+.ventricular .col_04 div.content ul li.row4 label{ float:left; width:20px; padding:0 5px 0 5px; line-height:20px;}
+.ventricular .col_04 div.content ul li.row4 input{ float:left; width:20px;}
+
+
+
+.lafpContainer{ float:left; width:100%; clear:both; padding:0px 0 10px 0;}
+.lafpContainer .lafp{ float:left; width:560px; border:3px solid #003300;}
+.lafpContainer .va{ float:left; width:317px; border:3px solid #003300; margin:0 0 0 10px;}
+.lafpContainer .lafp .header{ background:url(../images/lafp.jpg) no-repeat 0 0; height:29px; float:left; width:100%; clear:both;}
+.lafpContainer .va .header{ background:url(../images/va.jpg) no-repeat 0 0; height:29px; float:left; width:100%; clear:both;}
+.lafpContainer .lafp .header h2, .lafpContainer .va .header h2{ padding:0px; margin:0px; color:#FFF; font-size:16px; padding:0 0 0 10px; line-height:25px;}
+.lafpContainer .lafp .header span{ font-size:11px; font-weight:normal;}
+.lafpContainer .lafp div.content{  clear:both; }
+.lafpContainer .lafp div.content table tr.row{ }
+.lafpContainer .lafp div.content table tr.row:first-child td{ border-bottom:1px solid #003300;}
+.lafpContainer .lafp div.content table tr.row td{   padding:0 0px 0 0; border-left:1px solid #003300;}
+.lafpContainer .lafp div.content table tr.row td div label{ font-size:11px;}
+.lafpContainer .lafp div.content table tr.row td div img{ float:left; margin:0px; border:0px;}
+.lafpContainer .lafp div.content table tr.row td p{ padding:1px 0 1px 0; margin:0px;}
+
+.lafpContainer .lafp  table tr th.head{  line-height:20px; border-bottom:1px solid #003300; text-align:center; font-weight:bold; }
+.lafpContainer .lafp div.content ul li.row ul li div.content{ clear:both; display:block; padding:0 0  5px 0; float:left; }
+.lafpContainer .lafp div.content ul li.row ul li div.content dl dt{ float:left; display:inline-block; padding:5px 0 0 5px; }
+.lafpContainer .lafp div.content ul li.row ul li div.content dl dt img{ float:left; clear:both;}
+.lafpContainer .lafp div.content ul li.row ul li div.content dl dt em{ float:left; display:block; clear:both; text-align:center; font-style:normal; width:100%; font-size:11px;}
+.lafpContainer .lafp div.content table tr.row div.stH{ display:block; text-align:center; line-height:17px;}
+.lafpContainer .lafp div.content table tr.row div.stH img{ margin:0 10px 0 0;}
+
+
+.lafpContainer .va div.content{ float:left; clear:both; width:100%;}
+.lafpContainer .va div.content tr.row{ }
+.lafpContainer .va  table.border_b{ border-bottom:2px solid #000;}
+.lafpContainer .va div.content tr.rowp td{ padding:0 0 10px 0;}
+.lafpContainer .va div.content tr.rowk td{ padding:0 0 7px 0;}
+.lafpContainer .va div.content tr.row  div{ display:block; line-height:25px; padding:0 0 12px 5px; font-style:italic; font-weight:bold; }
+.lafpContainer .va div.content tr.row dl dt{ float:left; width:120px; padding:0 10px 0 15px; text-align:right; line-height:20px; }
+.lafpContainer .va div.content tr.row dl dd{ float:left; display:inline-block; }
+.lafpContainer .va div.content tr.row:first-child td{  line-height:25px; }
+.lafpContainer .va div.content tr.row dl dt.head{ text-align:left; font-style:italic; font-weight:bold; padding:0 20px 0 5px; line-height:20px;}
+.lafpContainer .va div.content tr.row dl.sub dd{ float:left; display:inline-block; width:30px; line-height:20px;}
+
+
+.hsContainer{ float:left; width:100%; clear:both;}
+.hsContainer .hs{ float:left; width:560px; border:3px solid #000080;}
+.hsContainer .apa{ float:left; width:230px; border:3px solid #000080; margin:0 0 0 10px;}
+.hsContainer .hs .header{ background:url(../images/blue_bg.jpg) no-repeat 0 0; height:29px; float:left; width:100%; clear:both;}
+.hsContainer .apa .header{ background:url(../images/blue_bg_2.jpg) no-repeat 0 0; height:29px; float:left; width:100%; clear:both;}
+
+.hsContainer .hs .header h2, .hsContainer .apa .header h2{ padding:0px; margin:0px; color:#FFF; font-size:16px; padding:0 0 0 10px; line-height:25px;}
+
+.hsContainer .hs div.content{ float:left; clear:both; width:100%; padding:0 0 10px 0;}
+.hsContainer .hs div.content table th:first-child{ width:110px;}
+.hsContainer .hs div.content table td:first-child{ width:110px;}
+.hsContainer .hs div.content table th{ text-align:left; padding:10px 3px 10px 3px; vertical-align:top; border-bottom:2px solid #000; }
+.hsContainer .hs div.content table td{ text-align:left; padding:2px 3px 4px 3px; vertical-align:top; }
+
+.hsContainer .apa div.content{ float:left; clear:both; width:100%; padding:0 0 10px 0;}
+.hsContainer .apa div.content table tr th{ padding:8px 5px 8px 0px; * padding:7px 5px 7px 0px; text-align:right; white-space:nowrap; font-weight:normal;}
+.hsContainer .apa div.content table tr td{ padding:8px 5px 8px 0px; *padding:7px 5px 7px 0px;  text-align:left; white-space:nowrap;}
+.hsContainer .apa div.content table tr td div.input{ width:35px; border:1px solid #7f9db9; height:20px;}
+
+
+.comments{ float:left; width:100%; clear:both; padding:15px 0 10px 0;}
+.comments h2{ margin:0px; padding:0px; color:#000; font-size:16px;}
+.comments div { float:left; width:100%; clear:both; padding:5px 0 0 0;}
+.comments div textarea{ width:890px;}
+.comments_bottom{ float:left; width:100%; clear:both; padding:10px 0 0 0;}
+.comments_bottom  div.ref{ float:left; width:60%; clear:none;}
+.comments_bottom div.sign{ float:left; text-align:left; font-size:14px; clear:none; font-weight:bold; width:30%;}
+
+.extContainer{ float:left; width:894px; clear:both; padding:0px 0 0px 0; border:3px solid #000080; overflow:hidden;}
+.extContainer .extHead{ float:left; width:100%; clear:both; background:url(../images/blue_bg_big.jpg) no-repeat 0 0; height:28px;}
+.extContainer .extHead h2{ padding:0px; margin:0px; color:#FFF; font-size:16px; padding:0 0 0 5px; line-height:25px;}
+.extCc{ display:block; padding:0px 0px 0px 0px; float:left;}
+
+.extCc table td.col1{ width:180px; border:3px solid #003300;}
+.extCc table td.col1 div.header{ float:left; width:100%; background:url(../images/va.jpg) no-repeat -137px 0; height:28px; }
+.extCc table td.col1 div.header h2{ padding:0px; margin:0px; color:#FFF; font-size:16px; padding:0 0 0 10px; line-height:25px;}
+.extCc table td.col1 table tr td{ font-size:10px;}
+.extContainer tr td div.input{ width:38px; height:20px; border:1px solid #7f9db9;}
+
+
+
+.extCc table td.col2{ width:70px; border:3px solid #800000;  }
+.extCc table td.col2 div.header{ float:left; width:100%; background:url(../images/co_bg.jpg) no-repeat -54px 0; height:28px; }
+.extCc table td.col2 div.header h2{ padding:0px; margin:0px; color:#FFF; font-size:16px; padding:0 0 0 5px; line-height:25px;}
+
+.extCc table td.col3{ width:222px; border:3px solid #000080; }
+.extCc table td.col3 div.header{ float:left; width:100%; background:url(../images/blue_bg_2.jpg) no-repeat -8px 0; height:28px; }
+.extCc table td.col3 div.header h2{ padding:0px; margin:0px; color:#FFF; font-size:16px; padding:0 0 0 5px; line-height:25px;}
+
+.extCc table td.col4{ width:213px; border:3px solid #800000;   }
+.extCc table td.col4 div.header{ float:left; width:100%; background:url(../images/ventricular_bg.jpg) no-repeat -71px 0; height:28px; }
+.extCc table td.col4 div.header h2{ padding:0px; margin:0px; color:#FFF; font-size:16px; padding:0 0 0 5px; line-height:25px;}
+
+.extCc table td.col5{ width:120px; border:3px solid #003300;  }
+.extCc table td.col5 div.header{ float:left; width:100%; background:url(../images/va.jpg) no-repeat -197px 0; height:28px; }
+.extCc table td.col5 div.header h2{ padding:0px; margin:0px; color:#FFF; font-size:16px; padding:0 0 0 5px; line-height:25px;}
+.extCc table td.col5 table tr td{ font-size:11px;}
+.extCc table table tr td{ font-size:11px;}
+
+div.input{ border:1px solid #7f9db9; height:17px; padding:3px 0px 0px 3px;}

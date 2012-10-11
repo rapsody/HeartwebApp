@@ -1,0 +1,639 @@
+<?php
+class Users
+ {
+    private $userObj;
+    
+    public function __construct()
+    {
+        include_once ROOT_DIR.'models'.DS.__class__.'.class.php';
+        $classname =  __class__.'_Model';
+        $this->userObj = new $classname; 
+    }
+    
+  public function validateRegister($data) {
+        
+        $input = trim($data);
+        try{
+            if (!isset($input[2]) ) throw new Exception ("Invalid Input");
+            
+            libxml_use_internal_errors(true);
+                
+            // convert the xml into Object
+            $inputObject = simplexml_load_string(
+                                    $input, 
+                                    "SimpleXMLElement" , 
+                                    LIBXML_NOCDATA
+                                );
+                             
+            if (!$inputObject) {
+
+			    // @var Array to store the error messages
+			    $errors = array ();
+			    
+			    // loop through the errors and store the errors in $errors
+			    foreach ( libxml_get_errors() as $e ) 
+			        $errors[] = $e -> message;
+			
+			    // @var String Errors are joined by a newline
+			    $errors = join ("\n", $errors);
+			    
+			    // throw the error
+			    throw new Exception ($errors);
+			} // if !$inputObject
+			
+			foreach ( $inputObject as $name => $value ){
+			 $inputObject -> $name = trim ($value);
+			}
+			
+			if('' == $inputObject->username)
+				throw new Exception ("Username should not be left empty.");
+			
+			if($this->userObj -> usernameExists($inputObject->username))
+				throw new Exception ("Username already exists.");
+				
+			if('' == $inputObject->password)
+				throw new Exception ("Password should not be left empty.");
+				
+			if($inputObject->password != $inputObject->confirmpassword)
+				throw new Exception ("Password and Confirm Password does not match.");
+			
+			if($inputObject->terms_accepted == '')
+				throw new Exception ("Please accept terms to proceed.");
+			
+			if($inputObject->udid == '')
+				throw new Exception ("Invalid Device.");
+			$image = $this->uploadFile();	
+			if($image == '')
+				throw new Exception ("Problem uploading file.");
+			if($image == 1)// if no image
+				$image = '';	
+			$result = $this->userObj -> registerUser($inputObject,$image);
+			return $result;
+        }
+        catch (Exception $e) {
+        	
+            $this -> setError($e -> getMessage());
+        }
+        
+        
+        
+    }
+    
+    private function uploadFile()
+    {
+    if(isset($_FILES) && count($_FILES) > 0)
+	{
+		foreach($_FILES as $k => $val)
+		{
+			$filename = rand().$val['name'];	
+			$uploadloc = $_SERVER['DOCUMENT_ROOT'].'/heartweb/actual/uploads/profiles/'.$filename;
+			
+			if($val['tmp_name'] != '')
+			{
+			$upload = move_uploaded_file($val['tmp_name'],$uploadloc);
+			if($upload)
+			return $filename;
+			else
+			{
+				if($val['size'] == 0)
+				{
+					$this -> setError('Maximum file size should be less than 2 MB.');
+					return '';
+				}
+				else
+				{
+					$this -> setError($val['error']);
+					return '';	
+				}
+			}
+			}
+			else
+			{
+			return 1;
+			}			
+		}
+	}
+	else
+	{
+		return 1;
+	}
+    }
+   
+    public function setError($error) {
+        
+        $this -> errorMessages[] = $error;
+        return false;
+    }
+    
+
+    /* to get particuler user's profile
+     * parameter $user_id
+     * returns array
+     */
+    
+    public function getUserProfile($input)
+    {
+		try{
+            if (!isset($input[2]) ) throw new Exception ("Invalid Input");
+            
+            libxml_use_internal_errors(true);
+                
+            // convert the xml into Object
+            $inputObject = simplexml_load_string(
+                                    $input, 
+                                    "SimpleXMLElement" , 
+                                    LIBXML_NOCDATA
+                                );
+            
+                                
+            if (!$inputObject) {
+                
+                // @var Array to store the error messages
+                $errors = array ();
+                
+                // loop through the errors and store the errors in $errors
+                foreach ( libxml_get_errors() as $e ) 
+                    $errors[] = $e -> message;
+            
+                // @var String Errors are joined by a newline
+                $errors = join ("\n", $errors);
+                
+                // throw the error
+                throw new Exception ($errors);
+            } // if !$inputObject
+            
+
+            if ( !isset ($inputObject -> username) ){
+                throw new Exception ('Please fill all the mandatory feilds');
+            } 
+            
+			$user_details = $this->userObj->loadUserProfile($inputObject -> username);
+			return $user_details;
+		
+        }
+        catch (Exception $e) {
+            return $this -> setError($e -> getMessage());
+        }
+		
+        
+    }
+    
+    /* to serch users based on first name and last name of users
+     * parameters firstname and lastname
+     * return array
+     */
+    
+    public function getSearchUsers($fname, $lname)
+    {
+	    $serch_users_details = $this->userObj->loadListOfSearchUsers($fname, $lname);
+	    return $serch_users_details;
+    }
+    
+    /* to get list of users
+     * parameters none
+     * returns array
+     */
+    public function  getListOfUsers()
+    {
+        $userlist = $this->userObj->loadListOfUsers();
+        return $userlist;
+    }
+    
+    
+    public function getGroupUsersList($input)
+    {
+    	try{
+            if (!isset($input[2]) ) throw new Exception ("Invalid Input");
+            
+            libxml_use_internal_errors(true);
+                
+            // convert the xml into Object
+            $inputObject = simplexml_load_string(
+                                    $input, 
+                                    "SimpleXMLElement" , 
+                                    LIBXML_NOCDATA
+                                );
+            
+                                
+            if (!$inputObject) {
+                
+                // @var Array to store the error messages
+                $errors = array ();
+                
+                // loop through the errors and store the errors in $errors
+                foreach ( libxml_get_errors() as $e ) 
+                    $errors[] = $e -> message;
+            
+                // @var String Errors are joined by a newline
+                $errors = join ("\n", $errors);
+                
+                // throw the error
+                throw new Exception ($errors);
+            } // if !$inputObject
+            
+           
+            if($inputObject->groupid == '')
+            {
+                throw new Exception (
+                        'Group Id should not be left empty.'
+                );
+            }
+            
+    		if($inputObject->userkey == '')
+            {
+                throw new Exception (
+                        'Userkey should not be left empty.'
+                );
+            }
+        $group_userdlist = $this->userObj->loadGroupUsersList($inputObject);
+        return $group_userdlist;
+            
+        }
+        catch (Exception $e) {
+            return $this -> setError($e -> getMessage());
+        }
+    
+    }
+    
+    public function passwordReminder($input) {
+        try{
+
+            if (!isset($input) ) throw new Exception ("Invalid Input");
+            
+            libxml_use_internal_errors(true);
+                
+            // convert the xml into Object
+            $inputObject = simplexml_load_string(
+                                    $input, 
+                                    "SimpleXMLElement" , 
+                                    LIBXML_NOCDATA
+                                );
+                                
+            if (!$inputObject) {
+
+                // @var Array to store the error messages
+                $errors = array ();
+                
+                // loop through the errors and store the errors in $errors
+                foreach ( libxml_get_errors() as $e ) 
+                    $errors[] = $e -> message;
+            
+                // @var String Errors are joined by a newline
+                $errors = join ("\n", $errors);
+                
+                // throw the error
+                throw new Exception ($errors);
+            } // if !$inputObject
+            
+            if ( 
+                !isset ($inputObject -> email[0]) 
+            ){
+            
+            // throw error to fill all feilds
+                throw new Exception (
+                        'Please fill all the mandatory feilds'
+                );
+            } 
+            
+            $password = $this -> userObj -> checkEmail($inputObject -> email);
+            
+            if (!$password) throw new Exception ('Email is not in the system');
+            
+            else {
+			
+                $to      = $inputObject -> email;
+                $subject = 'Password reminder';
+                $message = 'Your password :'.' '.$password;
+                $headers = 'From: admin@heartweb.com' . "\r\n" .
+                'X-Mailer: PHP/' . phpversion();
+
+                if(!mail($to, $subject, $message, $headers))
+                {
+                    throw new Exception ('Email  not sent');
+                } else {
+                
+                return true;
+                }
+            }
+        }
+        catch (Exception $e) {
+            return $this -> setError($e -> getMessage());
+        }
+    }
+
+ 
+    public function changePassword($input)
+    {
+    	try{
+            if (!isset($input[2]) ) throw new Exception ("Invalid Input");
+            
+            libxml_use_internal_errors(true);
+                
+            // convert the xml into Object
+            $inputObject = simplexml_load_string(
+                                    $input, 
+                                    "SimpleXMLElement" , 
+                                    LIBXML_NOCDATA
+                                );
+            
+                                
+            if (!$inputObject) {
+                
+                // @var Array to store the error messages
+                $errors = array ();
+                
+                // loop through the errors and store the errors in $errors
+                foreach ( libxml_get_errors() as $e ) 
+                    $errors[] = $e -> message;
+            
+                // @var String Errors are joined by a newline
+                $errors = join ("\n", $errors);
+                
+                // throw the error
+                throw new Exception ($errors);
+            } // if !$inputObject
+            
+            //@todo need to validate as per client requirement.
+            if ( 
+                !isset ($inputObject -> oldpassword) ||
+                !isset ($inputObject -> newpassword)                
+            ){
+            
+            // throw error to fill all feilds
+                throw new Exception (
+                        'Please fill all the mandatory feilds'
+                );
+            }
+            if(!$this->passwordValidity($inputObject->udid,$inputObject->auth,$inputObject->oldpassword))
+            {
+                throw new Exception (
+                        'Invalid Password.'
+                );
+            }
+            $result = $this -> userObj -> changePassword($inputObject);
+            return $result;
+            
+        }
+        catch (Exception $e) {
+            return $this -> setError($e -> getMessage());
+        }
+    }
+    
+   private function passwordValidity($udid,$auth,$oldpassword)
+    {
+        return $this -> userObj -> passwordValidity($udid,$auth,$oldpassword);
+    }
+
+
+    public function userLogin($input) {
+        try{
+            if (!isset($input[2]) ) throw new Exception ("Invalid Input");
+            
+            libxml_use_internal_errors(true);
+                
+            // convert the xml into Object
+            $inputObject = simplexml_load_string(
+                                    $input, 
+                                    "SimpleXMLElement" , 
+                                    LIBXML_NOCDATA
+                                );
+            
+                                
+            if (!$inputObject) {
+                
+                // @var Array to store the error messages
+                $errors = array ();
+                
+                // loop through the errors and store the errors in $errors
+                foreach ( libxml_get_errors() as $e ) 
+                    $errors[] = $e -> message;
+            
+                // @var String Errors are joined by a newline
+                $errors = join ("\n", $errors);
+                
+                // throw the error
+                throw new Exception ($errors);
+            } // if !$inputObject
+            
+
+            if ( 
+                !isset ($inputObject -> username) ||
+                !isset ($inputObject -> password)
+            ){
+            
+            // throw error to fill all feilds
+                throw new Exception (
+                        'Please fill all the mandatory feilds'
+                );
+            } 
+            
+            
+            $userlogin = $this -> userObj -> userLogin(
+                                                        $inputObject -> username,
+                                                        $inputObject -> password,
+                                                        $inputObject -> udid);
+            
+            if ($userlogin['id'] == '0') {
+                throw new Exception($userlogin['name']);
+            }
+            else
+            {
+                $returndata['status'] = 'OK';
+                $userkey = $this -> userObj -> generateUserKey(
+                                                                $userlogin['id'],
+                                                                $inputObject -> udid
+                                                               );
+                $returndata['userauthkey'] = $userkey;
+            }
+            
+            
+            
+            
+            return $returndata;
+            
+        }
+        catch (Exception $e) {
+            return $this -> setError($e -> getMessage());
+        }
+    }
+    
+	public function sendingmessage($input) 
+	{
+        try{
+            if (!isset($input[2]) ) throw new Exception ("Invalid Input");
+            
+            libxml_use_internal_errors(true);
+                
+            // convert the xml into Object
+            $inputObject = simplexml_load_string(
+                                    $input, 
+                                    "SimpleXMLElement" , 
+                                    LIBXML_NOCDATA
+                                );
+                                
+            if (!$inputObject) {
+
+                // @var Array to store the error messages
+                $errors = array ();
+                
+                // loop through the errors and store the errors in $errors
+                foreach ( libxml_get_errors() as $e ) 
+                    $errors[] = $e -> message;
+            
+                // @var String Errors are joined by a newline
+                $errors = join ("\n", $errors);
+                
+                // throw the error
+                throw new Exception ($errors);
+            } // if !$inputObject
+            
+            if (            	 
+            	!isset ($inputObject -> auth) ||
+                !isset ($inputObject -> group) ||
+                !isset ($inputObject -> subject) ||
+                !isset ($inputObject -> message)
+            ){
+            
+            // throw error to fill all feilds
+                throw new Exception (
+                        'Please fill all the mandatory feilds'
+                );
+            } 
+            
+            $userId = $this -> userObj -> checkUser($inputObject -> auth);
+            
+            if (!$userId) throw new Exception ('User doesn"t exist');
+            
+            else{
+                foreach($inputObject -> group as $group)
+                {
+	            	$groupId = $this -> userObj -> checkGroup($userId, $inputObject -> group, $inputObject -> subject, $inputObject -> message);
+	                
+	            	if(!$groupId) throw new Exception ('Group doesn"t exist');
+	            	else
+	            	{
+		            	// @todo add email here.
+		                
+		                return true;
+	            	}
+                }
+            }
+        }
+        catch (Exception $e) {
+            return $this -> setError($e -> getMessage());
+        }
+    }
+
+	public function msgAutoSuggest($input)
+    {
+		try{
+            if (!isset($input[2]) ) throw new Exception ("Invalid Input");
+            
+            libxml_use_internal_errors(true);
+                
+            // convert the xml into Object
+            $inputObject = simplexml_load_string(
+                                    $input, 
+                                    "SimpleXMLElement" , 
+                                    LIBXML_NOCDATA
+                                );
+                                
+            if (!$inputObject) {
+
+                // @var Array to store the error messages
+                $errors = array ();
+                
+                // loop through the errors and store the errors in $errors
+                foreach ( libxml_get_errors() as $e ) 
+                    $errors[] = $e -> message;
+            
+                // @var String Errors are joined by a newline
+                $errors = join ("\n", $errors);
+                
+                // throw the error
+                throw new Exception ($errors);
+            } // if !$inputObject
+            
+			if(!isset($inputObject -> username) || $inputObject -> username == '')
+				throw new Exception ('Searchname should not be left empty');
+            if (!isset ($inputObject -> userkey) || $inputObject -> userkey == ''){
+				throw new Exception ('Userkey should not be left empty');
+            } 
+			
+			$users = $this->userObj->loadMsgAutoSuggestUsername($inputObject -> username, $inputObject -> userkey);
+			$groups = $this->userObj->loadMsgAutoSuggestGroupname($inputObject -> username, $inputObject -> userkey);
+			return compact('users','groups');
+		}
+        catch (Exception $e) {
+            return $this -> setError($e -> getMessage());
+        }
+	
+    	
+    }
+    
+ 
+	 public function checkAuthKey($authkey)
+	{
+            
+        $result = $this->userObj->checkAuthKey($authkey);
+            
+        return $result;
+            
+    }// end fn: getFaculties
+    
+	
+    public function checkUserFromRawData($input)
+    {
+	    try{
+	            if (!isset($input[2]) ) throw new Exception ("Invalid Input");
+	            
+	            libxml_use_internal_errors(true);
+	               
+	            // convert the xml into Object
+	            $inputObject = simplexml_load_string(
+	                                    $input, 
+	                                    "SimpleXMLElement" , 
+	                                    LIBXML_NOCDATA
+	                                );
+	            if (!$inputObject) {
+	                // @var Array to store the error messages
+	                $errors = array ();
+	                // loop through the errors and store the errors in $errors
+	                foreach ( libxml_get_errors() as $e ) 
+	                    $errors[] = $e -> message;
+	                // @var String Errors are joined by a newline
+	                $errors = join ("\n", $errors);
+	                // throw the error
+	                throw new Exception ($errors);
+	            } // if !$inputObject
+	            
+	            if($inputObject->userkey != '')
+	            {
+	            	$authkey = $inputObject->userkey;
+	            }
+	            else if($inputObject->auth != '')
+	            {
+	            	$authkey = $inputObject->userkey;
+	            }
+				else if($inputObject->authKey != '')
+				{
+					$authkey = $inputObject->authKey;
+				}
+				else
+				 throw new Exception ('Invalid Authentication Key.');
+	             $result = $this->userObj->checkAuthKey($authkey);
+				if($result)
+	             return $result;
+	            else
+	             throw new Exception ('Authentication Failed.');
+	             
+	            
+	        }
+	        catch (Exception $e) {
+	        	
+	            return $this -> setError($e -> getMessage());
+	        }
+    }
+    
+
+}

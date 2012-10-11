@@ -1,0 +1,43 @@
+<?php
+
+	class Subscription_Model {
+		
+		
+		private $db;
+		
+		const TABLE = "subscription_types";
+		
+		public function __construct() {
+			global $db;
+			
+			$this -> db =& $db;
+		}
+		
+		public function loadSubscriptions() {
+			$result = $this -> db -> query (
+						"SELECT
+							*
+						FROM
+							" . self::TABLE . "
+						WHERE
+							status = '1'"
+						);
+						
+			$return = array();
+				
+			if ($result ) {
+				/* fetch associative array */
+				while ($row = $result->fetch_assoc()) {
+					$temp = array();
+					$temp['label_text'] = 'Subscribe for '.$row['subscription_duration'].' Months';
+					$temp['button_text'] = $row['subscription_amount'].' $';
+					$temp['amount'] = $row['subscription_amount'];
+					$temp['duration'] = $row['subscription_duration'];
+					$return['subscriptions']['subscription'][]['nodes'] = $temp;
+				}
+				/* free result set */
+				$result->free();
+			}
+			return $return;
+		}
+	}// end fn: Subscription

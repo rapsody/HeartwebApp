@@ -1,0 +1,19 @@
+<?php
+Class Subscription {
+    
+    private $objSubscriptionModel;
+
+    public function __construct()
+    {
+        include ROOT_DIR.'models'.DS.__class__.'.class.php';
+        $class_name = __class__.'_Model';
+        $this->objSubscriptionModel = new $class_name;
+    }
+        
+    public function getSubscription() 
+    {
+        $subscriptions = $this->objSubscriptionModel->loadSubscriptions();
+        return $subscriptions;
+    }
+
+}
